@@ -1,0 +1,41 @@
+
+/* 로고크기 조절 */
+#logo{
+    float: left;
+    margin-top: 20px;
+    width: 166px;
+    height: 100px;
+    margin-left: 50px;
+}
+
+/* 캔버스 크기, 색 조절 */
+#canvas{
+    margin-top: 50px;
+}
+#gameCanvas{
+    width: 800px;
+    height: 600px;
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 20px 20px 20px 20px / 20px 20px 20px 20px;
+}
+#gaugeCanvas{
+    width: 150px;
+    height: 600px;
+    background-color: white;
+    border: 1px solid black;
+    margin-left: 130px;
+    background-image: url('../img/game_gaugeBackground.png');
+    border-radius: 20px 20px 20px 20px / 20px 20px 20px 20px;
+}
+
+/* a태그 하이퍼링크 밑줄 없애기 */
+a { text-decoration:none }
+
+/* 배경 */
+body{
+    background-image: url('../img/info_background.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    
+}
