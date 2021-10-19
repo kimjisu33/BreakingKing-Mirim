@@ -30,12 +30,12 @@ function runGame(){
 }
 
 function move() {
-  char_x+=dx;
+  if(char_x+dx>0 && char_x+dx<700)  char_x+=dx; //캐릭터 좌우 캔버스 안나가게 하기
   char_y+=dy;
 }
 function draw() {
-  context.drawImage(backgroundImg, 0,0,800,600);
-  context.drawImage(charImg, char_x,char_y, 100,100);
+  context.drawImage(backgroundImg, 0,0,800,600); // 배경 그리기
+  context.drawImage(charImg, char_x,char_y, 100,100); // 캐릭터 그리기
   
   context.fillText(keycode,10, 40);
 }
