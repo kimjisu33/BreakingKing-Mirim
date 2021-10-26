@@ -5,10 +5,30 @@ body{
     
     }
 
-    #logo{
-         margin-top: 30px;
-            margin-left: 500px;
-            width: 500px;
-            height: 150px;
-        }
+#logo{
+margin-top: 30px;
+margin-left: 550px;
+width: 500px;
+height: 150px;
+    }
+
+.map1{
+margin-left: 200px;
+    }
+
+.map2{
+margin-top: 20px;
+margin-left: 400px;
+    }
+
+.map{
+box-shadow: 20px 20px;
+border-radius: 10px;
+margin-left: 100px;
+    }
+
+a:hover{
+background-color: aqua;
+    }
+           
         
