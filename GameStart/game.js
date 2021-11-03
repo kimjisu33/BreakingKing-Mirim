@@ -9,6 +9,8 @@ let charImg=new Image();
 let ObstacleImg=new Image();
 charImg.src="../img/char_ready.png"
 ObstacleImg.src="../img/obstacle1.png"
+let ObsBreakImg=new Image();
+ObsBreakImg.src="../img/obstacle1_break.png"
 let char_x=340; //캐릭터 x 좌표
 let char_y=470; //캐릭터 y 좌표
 let Obs_x=0; //장애물 x 좌표
@@ -30,9 +32,13 @@ function gameStart(){
   
   createObstacle();
   let run=setTimeout(function runGame(){
+    
     move();
     draw();
+
     run=setTimeout(runGame,1);
+
+
   },1);
 
 
@@ -63,8 +69,8 @@ function draw() {
   context.drawImage(charImg, char_x,char_y, 100,100); // 캐릭터 그리기
   //context.drawImage(ObstacleImg,block.x, block.y,100,100);
   //Obstacle(); //장애물 그리기
-  //context.fillText(keycode,10, 40); //키보드 이벤트 확인용
-  
+  context.fillText(keycode,10, 40); //키보드 이벤트 확인용
+    context.fillText(keycode,10, 40); //키보드 이벤트 확인용
 }
 
 function keydown() {
@@ -98,7 +104,12 @@ function Space(){
       } 
       //격파 할 때
       else {
+     
+        
         dy=-2;charImg.src="../img/char_kick.png"; 
+        while(1){
+          chkBreak(); break;
+        }
         setInterval(() => dy++,500);
         setTimeout(() => charImg.src="../img/char_flying.png", 200);
       }
@@ -109,21 +120,30 @@ function Space(){
 function createObstacle(){
   let x=[0,100,200,300,400,500,600,700];
   let y=[0,100,200];
-
-  for(let i=0 ; i<10 ; i++){
+  let xy//좌표확인용
+  for(let i=0 ; i<15 ; i++){
     Obs_x=Math.floor(Math.random() * 8);
     Obs_y= Math.floor(Math.random() * 3);
+
     set.add({
       x: x[Obs_x],
       y: y[Obs_y],
     });
   } 
   
-
-  //장애물 10개 생성하는데 왜그러지??
-  /*
-  for(let i=0; i<10; i++){
-    context.drawImage(ObstacleImg,block.x, block.y, 100,100);
-  }*/
-
 }
+
+function chkBreak(){
+
+  for (let xy of set) {
+    // alert(char_y+dy);
+    // alert(xy.y);
+    if(char_y+dy<=xy.y+10 || char_y+dy<=xy.y-10 ){
+      if(char_x+dx<=xy.x+10 || char_x+dx<=xy.x-10 )
+      ObstacleImg.src="../img/obstacle1_break.png";
+      charImg.src="../img/char_breaking.png";   
+    }
+    
+  }
+}
+
