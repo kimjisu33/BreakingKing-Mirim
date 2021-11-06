@@ -63,9 +63,9 @@ function move() {
 function draw() {
  
   context.drawImage(backgroundImg, 0,0,800,600); // 배경 그리기
-  for(let block of set){ //장애물 그리기
+  for(let block of set){ //장애물 그리기//
     context.drawImage(ObstacleImg,block.x, block.y, 100,100);
-  }
+  }//
   context.drawImage(charImg, char_x,char_y, 100,100); // 캐릭터 그리기
   //context.drawImage(ObstacleImg,block.x, block.y,100,100);
   //Obstacle(); //장애물 그리기
@@ -98,20 +98,21 @@ function keyup() {
 function Space(){
   //처음 점프 할 때
       if(Spacekey==1){ 
-        Spacekey=2; dy=-7;  
+        Spacekey=2; dy=-15;  
         setInterval(() => dy++,500); 
         charImg.src="../img/char_flying.png";
       } 
       //격파 할 때
       else {
-     
-        
+        chkBreak();
+       
         dy=-2;charImg.src="../img/char_kick.png"; 
-        while(1){
-          chkBreak(); break;
-        }
+        // while(1){
+        //   chkBreak(); break;
+        // }
         setInterval(() => dy++,500);
         setTimeout(() => charImg.src="../img/char_flying.png", 200);
+     
       }
    
 }
@@ -134,16 +135,22 @@ function createObstacle(){
 }
 
 function chkBreak(){
-
+let i=0;
   for (let xy of set) {
     // alert(char_y+dy);
     // alert(xy.y);
-    if(char_y+dy<=xy.y+10 || char_y+dy<=xy.y-10 ){
-      if(char_x+dx<=xy.x+10 || char_x+dx<=xy.x-10 )
-      ObstacleImg.src="../img/obstacle1_break.png";
-      charImg.src="../img/char_breaking.png";   
-    }
-    
+    if(char_y+dy>=xy.y-15 && char_y+dy<=xy.y+15 && char_x+dx>=xy.x-15 && char_x+dx<=xy.x+15 ){
+
+        charImg.src="../img/char_breaking.png";   
+        let s=Array.from(set);
+        console.log(set.delete(s[i]));
+        dy+=3;
+     
+      
+      
+    } 
+   i++;
   }
+ 
 }
 
