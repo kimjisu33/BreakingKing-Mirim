@@ -70,7 +70,6 @@ function draw() {
   //context.drawImage(ObstacleImg,block.x, block.y,100,100);
   //Obstacle(); //장애물 그리기
   context.fillText(keycode,10, 40); //키보드 이벤트 확인용
-    context.fillText(keycode,10, 40); //키보드 이벤트 확인용
 }
 
 function keydown() {
@@ -135,21 +134,21 @@ function createObstacle(){
 }
 
 function chkBreak(){
-let i=0;
+//let i=0;
   for (let xy of set) {
     // alert(char_y+dy);
     // alert(xy.y);
-    if(char_y+dy>=xy.y-15 && char_y+dy<=xy.y+15 && char_x+dx>=xy.x-15 && char_x+dx<=xy.x+15 ){
+    if(char_y+dy>=xy.y-40 && char_y+dy<=xy.y+40 && char_x+dx>=xy.x-40 && char_x+dx<=xy.x+40 ){
 
         charImg.src="../img/char_breaking.png";   
-        let s=Array.from(set);
-        console.log(set.delete(s[i]));
+        //let s=Array.from(set);
+        console.log(set.delete(xy));
         dy+=3;
      
       
       
     } 
-   i++;
+   //i++;
   }
  
 }
