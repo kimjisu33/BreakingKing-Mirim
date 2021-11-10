@@ -5,7 +5,7 @@ let context;
 let scoreText;
 
 let backgroundImg=new Image();
-backgroundImg.src="../img/game_gaugeBackground.png";//배경 나중에 바꾸기
+backgroundImg.src="../img/space_back1.png";//배경 나중에 바꾸기
 let charImg=new Image();
 let ObstacleImg=new Image();
 charImg.src="../img/char_ready.png"
@@ -64,10 +64,12 @@ function move() {
 function draw() {
  
   context.drawImage(backgroundImg, 0,0,800,600); // 배경 그리기
+
+  context.drawImage(charImg, char_x,char_y, 100,100); // 캐릭터 그리기
+
   for(let block of set){ //장애물 그리기
     context.drawImage(ObstacleImg,block.x, block.y, 100,100);
   }
-  context.drawImage(charImg, char_x,char_y, 100,100); // 캐릭터 그리기
   //context.drawImage(ObstacleImg,block.x, block.y,100,100);
   //context.fillText(score,10, 40);
 }
@@ -97,18 +99,16 @@ function keyup() {
 function Space(){
   //처음 점프 할 때
       if(Spacekey==1){ 
-        Spacekey=2; dy=-15;  
-        setInterval(() => dy++,500); 
-        charImg.src="../img/char_flying.png";
-      } 
+        Spacekey=2; dy=-10;   //처음 높이 상승 나중에 수정할 것
+        setInterval(() => dy++,200);  //높이가 0.5초마다 낮아짐
+        charImg.src="../img/char_flying.png"; 
+      
+        setTimeout(() =>   backgroundImg.src="../img/space_back2.png", 500); //0.5초후 점프하면 하늘배경으로
+      }  
       //격파 할 때
       else {
         chkBreak();
-       
-        dy=-2;charImg.src="../img/char_kick.png"; 
-        // while(1){
-        //   chkBreak(); break;
-        // }
+        charImg.src="../img/char_kick.png"; 
         setInterval(() => dy++,500);
         setTimeout(() => charImg.src="../img/char_flying.png", 200);
      
@@ -120,7 +120,7 @@ function Space(){
 function createObstacle(){
   let x=[0,100,200,300,400,500,600,700];
   let y=[0,100,200];
-  let xy//좌표확인용
+
   for(let i=0 ; i<15 ; i++){
     Obs_x=Math.floor(Math.random() * 8);
     Obs_y= Math.floor(Math.random() * 3);
@@ -136,14 +136,13 @@ function createObstacle(){
 function chkBreak(){
   scoreText=document.getElementById("score");
   for (let xy of set) {
-    // alert(char_y+dy);
-    // alert(xy.y);
+      //격파성공하면
     if(char_y+dy>=xy.y-40 && char_y+dy<=xy.y+40 && char_x+dx>=xy.x-40 && char_x+dx<=xy.x+40){
         charImg.src="../img/char_breaking.png"
         //setTimeout(()=>charImg.src="../img/char_kick.png",1000);   
         
         set.delete(xy);
-        dy+=3;
+        dy-=8; //격파 성공시 y값 상승
         score+=10;
         scoreText.innerHTML="점수 : "+score;
       
