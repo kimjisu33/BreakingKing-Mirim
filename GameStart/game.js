@@ -2,6 +2,7 @@
 
 let gameCanvas;
 let context;
+let scoreText;
 
 let backgroundImg=new Image();
 backgroundImg.src="../img/game_gaugeBackground.png";//배경 나중에 바꾸기
@@ -21,6 +22,8 @@ let Spacekey=1; //스페이스 종류 판단
 let keycode;
 setInterval(dy=2,1);
 
+let score=0;
+
 let set=new Set();
 
 function gameStart(){
@@ -37,8 +40,6 @@ function gameStart(){
     draw();
 
     run=setTimeout(runGame,1);
-
-
   },1);
 
 
@@ -63,13 +64,12 @@ function move() {
 function draw() {
  
   context.drawImage(backgroundImg, 0,0,800,600); // 배경 그리기
-  for(let block of set){ //장애물 그리기//
+  for(let block of set){ //장애물 그리기
     context.drawImage(ObstacleImg,block.x, block.y, 100,100);
-  }//
+  }
   context.drawImage(charImg, char_x,char_y, 100,100); // 캐릭터 그리기
   //context.drawImage(ObstacleImg,block.x, block.y,100,100);
-  //Obstacle(); //장애물 그리기
-  context.fillText(keycode,10, 40); //키보드 이벤트 확인용
+  //context.fillText(score,10, 40);
 }
 
 function keydown() {
@@ -124,7 +124,7 @@ function createObstacle(){
   for(let i=0 ; i<15 ; i++){
     Obs_x=Math.floor(Math.random() * 8);
     Obs_y= Math.floor(Math.random() * 3);
-
+    //블록 중복 제거 해야할듯~~~ 블록 하나깰때 점수 10 이상 찍힘
     set.add({
       x: x[Obs_x],
       y: y[Obs_y],
@@ -134,21 +134,20 @@ function createObstacle(){
 }
 
 function chkBreak(){
-//let i=0;
+  scoreText=document.getElementById("score");
   for (let xy of set) {
     // alert(char_y+dy);
     // alert(xy.y);
-    if(char_y+dy>=xy.y-40 && char_y+dy<=xy.y+40 && char_x+dx>=xy.x-40 && char_x+dx<=xy.x+40 ){
-
-        charImg.src="../img/char_breaking.png";   
-        //let s=Array.from(set);
-        console.log(set.delete(xy));
+    if(char_y+dy>=xy.y-40 && char_y+dy<=xy.y+40 && char_x+dx>=xy.x-40 && char_x+dx<=xy.x+40){
+        charImg.src="../img/char_breaking.png"
+        //setTimeout(()=>charImg.src="../img/char_kick.png",1000);   
+        
+        set.delete(xy);
         dy+=3;
-     
-      
+        score+=10;
+        scoreText.innerHTML="점수 : "+score;
       
     } 
-   //i++;
   }
  
 }

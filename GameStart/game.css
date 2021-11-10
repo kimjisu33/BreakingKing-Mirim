@@ -39,3 +39,10 @@ body{
     background-size: cover;
     
 }
+
+#score{
+    color:white;
+    font-weight: bold;
+    font-size: 45px;
+    
+}
