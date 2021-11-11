@@ -20,6 +20,7 @@ let dx=0;
 let dy=0;
 let Spacekey=1; //스페이스 종류 판단
 let keycode;
+let break_cnt=0; //격파갯수
 setInterval(dy=2,1);
 
 let score=0;
@@ -39,8 +40,16 @@ function gameStart(){
     move();
     draw();
 
+    if(Spacekey==2){
+      drawObs();  
+      
+    }
+
+
+
     run=setTimeout(runGame,1);
   },1);
+
 
 
   //setInterval(runGame,1);
@@ -67,13 +76,20 @@ function draw() {
 
   context.drawImage(charImg, char_x,char_y, 100,100); // 캐릭터 그리기
 
-  for(let block of set){ //장애물 그리기
-    context.drawImage(ObstacleImg,block.x, block.y, 100,100);
-  }
+  // for(let block of set){ //장애물 그리기
+  //   context.drawImage(ObstacleImg,block.x, block.y, 100,100);
+  // }
   //context.drawImage(ObstacleImg,block.x, block.y,100,100);
   //context.fillText(score,10, 40);
 }
 
+function drawObs(){
+
+  for(let block of set){ //장애물 그리기
+    context.drawImage(ObstacleImg,block.x, block.y, 100,100);
+  }
+  
+}
 function keydown() {
   keycode=event.keyCode;
   switch(keycode){
@@ -99,7 +115,7 @@ function keyup() {
 function Space(){
   //처음 점프 할 때
       if(Spacekey==1){ 
-        Spacekey=2; dy=-10;   //처음 높이 상승 나중에 수정할 것
+        Spacekey=2; dy=-7;   //처음 높이 상승 나중에 수정할 것
         setInterval(() => dy++,200);  //높이가 0.5초마다 낮아짐
         charImg.src="../img/char_flying.png"; 
       
@@ -120,9 +136,9 @@ function Space(){
 //장애물 생성
 function createObstacle(){
   let x=[0,100,200,300,400,500,600,700];
-  let y=[0,100,200];
+  let y=[300,100,200];
 
-  for(let i=0 ; i<15 ; i++){
+  for(let i=0 ; i<30 ; i++){
     Obs_x=Math.floor(Math.random() * 8);
     Obs_y= Math.floor(Math.random() * 3);
     //블록 중복 제거 해야할듯~~~ 블록 하나깰때 점수 10 이상 찍힘
@@ -139,13 +155,20 @@ function chkBreak(){
   for (let xy of set) {
       //격파성공하면
     if(char_y+dy>=xy.y-40 && char_y+dy<=xy.y+40 && char_x+dx>=xy.x-40 && char_x+dx<=xy.x+40){
+        break_cnt++;
+
         charImg.src="../img/char_breaking.png"  
-        
         set.delete(xy);
-        dy-=8; //격파 성공시 y값 상승
+
+        if(break_cnt==3){ //테스트용~ 나중에 수정할 것
+          backgroundImg.src="../img/space_back3.png"
+        }
+      
+        dy-=5; //격파 성공시 y값 상승
+        
         score+=10;
         scoreText.innerHTML="점수 : "+score;
-      
+  
     } 
   }
  
