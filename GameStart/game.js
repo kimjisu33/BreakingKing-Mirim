@@ -107,8 +107,9 @@ function Space(){
       }  
       //격파 할 때
       else {
-        chkBreak();
         charImg.src="../img/char_kick.png"; 
+        chkBreak();
+        
         setInterval(() => dy++,500);
         setTimeout(() => charImg.src="../img/char_flying.png", 200);
      
@@ -138,8 +139,7 @@ function chkBreak(){
   for (let xy of set) {
       //격파성공하면
     if(char_y+dy>=xy.y-40 && char_y+dy<=xy.y+40 && char_x+dx>=xy.x-40 && char_x+dx<=xy.x+40){
-        charImg.src="../img/char_breaking.png"
-        //setTimeout(()=>charImg.src="../img/char_kick.png",1000);   
+        charImg.src="../img/char_breaking.png"  
         
         set.delete(xy);
         dy-=8; //격파 성공시 y값 상승
