@@ -5,7 +5,7 @@ let context;
 let scoreText;
 
 let backgroundImg=new Image();
-backgroundImg.src="../img/space_back1.png";//배경 나중에 바꾸기
+backgroundImg.src="../img/space_back1.png"; //배경
 let charImg=new Image();
 let ObstacleImg=new Image();
 charImg.src="../img/char_ready.png"
@@ -42,10 +42,7 @@ function gameStart(){
 
     if(Spacekey==2){
       drawObs();  
-      
     }
-
-
 
     run=setTimeout(runGame,1);
   },1);
@@ -86,9 +83,9 @@ function draw() {
 function drawObs(){
 
   for(let block of set){ //장애물 그리기
-    context.drawImage(ObstacleImg,block.x, block.y, 100,100);
+    context.drawImage(block.img,block.x, block.y, 100,100);
+    if(block.isblocken) setTimeout(() => set.delete(block), 100);
   }
-  
 }
 function keydown() {
   keycode=event.keyCode;
@@ -145,10 +142,13 @@ function createObstacle(){
     set.add({
       x: x[Obs_x],
       y: y[Obs_y],
+      img:ObstacleImg,
+      isblocken: false,
     });
   } 
   
 }
+
 
 function chkBreak(){
   scoreText=document.getElementById("score");
@@ -157,8 +157,10 @@ function chkBreak(){
     if(char_y+dy>=xy.y-40 && char_y+dy<=xy.y+40 && char_x+dx>=xy.x-40 && char_x+dx<=xy.x+40){
         break_cnt++;
 
+        xy.img=ObsBreakImg;
+        xy.isblocken=true;
         charImg.src="../img/char_breaking.png"  
-        set.delete(xy);
+        //set.delete(xy);
 
         if(break_cnt==3){ //테스트용~ 나중에 수정할 것
           backgroundImg.src="../img/space_back3.png"
