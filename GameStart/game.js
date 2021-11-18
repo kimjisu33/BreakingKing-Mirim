@@ -26,6 +26,11 @@ setInterval(dy=2,1);
 let score=0;
 
 let set=new Set();
+let set1=new Set();
+let set2=new Set();
+let set3=new Set();
+let set4=new Set();
+let set5=new Set();
 
 function gameStart(){
   gameCanvas = document.getElementById("gameCanvas");
