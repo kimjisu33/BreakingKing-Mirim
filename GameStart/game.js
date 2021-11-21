@@ -25,12 +25,7 @@ setInterval(dy=2,1);
 
 let score=0;
 
-let set=new Set();
-let set1=new Set();
-let set2=new Set();
-let set3=new Set();
-let set4=new Set();
-let set5=new Set();
+let blocks=new Map();
 
 function gameStart(){
   gameCanvas = document.getElementById("gameCanvas");
@@ -87,9 +82,9 @@ function draw() {
 
 function drawObs(){
 
-  for(let block of set){ //장애물 그리기
-    context.drawImage(block.img,block.x, block.y, 100,100);
-    if(block.isblocken) setTimeout(() => set.delete(block), 100);
+  for(let key of blocks.keys()){ //장애물 그리기
+    context.drawImage(blocks.get(key).img,blocks.get(key).x, blocks.get(key).y, 100,100);
+    if(blocks.get(key).isblocken) setTimeout(() => blocks.delete(key), 100);
   }
 }
 function keydown() {
@@ -140,16 +135,20 @@ function createObstacle(){
   let x=[0,100,200,300,400,500,600,700];
   let y=[300,100,200];
 
-  for(let i=0 ; i<30 ; i++){
+  for(let i=0 ; i<10 ; ){
     Obs_x=Math.floor(Math.random() * 8);
     Obs_y= Math.floor(Math.random() * 3);
     //블록 중복 제거 해야할듯~~~ 블록 하나깰때 점수 10 이상 찍힘
-    set.add({
+
+    if(blocks.has(`${Obs_x}${Obs_y}`)) continue;
+
+    blocks.set(`${Obs_x}${Obs_y}`,{
       x: x[Obs_x],
       y: y[Obs_y],
       img:ObstacleImg,
       isblocken: false,
     });
+    i++;
   } 
   
 }
@@ -157,13 +156,13 @@ function createObstacle(){
 
 function chkBreak(){
   scoreText=document.getElementById("score");
-  for (let xy of set) {
+  for (let xy of blocks.keys()) {
       //격파성공하면
-    if(char_y+dy>=xy.y-40 && char_y+dy<=xy.y+40 && char_x+dx>=xy.x-40 && char_x+dx<=xy.x+40){
+    if(char_y+dy>=blocks.get(xy).y-40 && char_y+dy<=blocks.get(xy).y+40 && char_x+dx>=blocks.get(xy).x-40 && char_x+dx<=blocks.get(xy).x+40){
         break_cnt++;
 
-        xy.img=ObsBreakImg;
-        xy.isblocken=true;
+        blocks.get(xy).img=ObsBreakImg;
+        blocks.get(xy).isblocken=true;
         charImg.src="../img/char_breaking.png"  
         //set.delete(xy);
 
