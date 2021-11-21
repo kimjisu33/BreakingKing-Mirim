@@ -25,7 +25,18 @@ setInterval(dy=2,1);
 
 let score=0;
 
-let blocks=new Map();
+//let blocks=new Map();
+
+let blocks=[
+  new Map(),
+  new Map(),
+  new Map(),
+  new Map(),
+  new Map(),
+];
+let block_i=0;
+//배경 바뀌면 장애물도 바뀌게 하기
+//장애물이 바뀌면 격파할때 오류 생김.. 고쳐야함!! 일단 커밋
 
 function gameStart(){
   gameCanvas = document.getElementById("gameCanvas");
@@ -33,8 +44,7 @@ function gameStart(){
   gameCanvas.width=800;
   gameCanvas.height=600;
 
-  
-  createObstacle();
+  for(let i=0 ; i<blocks.length ; i++) createObstacle(i);
   let run=setTimeout(function runGame(){
     
     move();
@@ -82,9 +92,9 @@ function draw() {
 
 function drawObs(){
 
-  for(let key of blocks.keys()){ //장애물 그리기
-    context.drawImage(blocks.get(key).img,blocks.get(key).x, blocks.get(key).y, 100,100);
-    if(blocks.get(key).isblocken) setTimeout(() => blocks.delete(key), 100);
+  for(let key of blocks[block_i].keys()){ //장애물 그리기
+    context.drawImage(blocks[block_i].get(key).img,blocks[block_i].get(key).x, blocks[block_i].get(key).y, 100,100);
+    if(blocks[block_i].get(key).isblocken) setTimeout(() => blocks[block_i].delete(key), 100);
   }
 }
 function keydown() {
@@ -131,18 +141,17 @@ function Space(){
 }
 
 //장애물 생성
-function createObstacle(){
+function createObstacle(b_i){
   let x=[0,100,200,300,400,500,600,700];
   let y=[300,100,200];
 
   for(let i=0 ; i<10 ; ){
     Obs_x=Math.floor(Math.random() * 8);
     Obs_y= Math.floor(Math.random() * 3);
-    //블록 중복 제거 해야할듯~~~ 블록 하나깰때 점수 10 이상 찍힘
+  
+    if(blocks[b_i].has(`${Obs_x}${Obs_y}`)) continue;
 
-    if(blocks.has(`${Obs_x}${Obs_y}`)) continue;
-
-    blocks.set(`${Obs_x}${Obs_y}`,{
+    blocks[b_i].set(`${Obs_x}${Obs_y}`,{
       x: x[Obs_x],
       y: y[Obs_y],
       img:ObstacleImg,
@@ -156,18 +165,19 @@ function createObstacle(){
 
 function chkBreak(){
   scoreText=document.getElementById("score");
-  for (let xy of blocks.keys()) {
+  for (let xy of blocks[block_i].keys()) {
       //격파성공하면
-    if(char_y+dy>=blocks.get(xy).y-40 && char_y+dy<=blocks.get(xy).y+40 && char_x+dx>=blocks.get(xy).x-40 && char_x+dx<=blocks.get(xy).x+40){
+    if(char_y+dy>=blocks[block_i].get(xy).y-40 && char_y+dy<=blocks[block_i].get(xy).y+40 && char_x+dx>=blocks[block_i].get(xy).x-40 && char_x+dx<=blocks[block_i].get(xy).x+40){
         break_cnt++;
 
-        blocks.get(xy).img=ObsBreakImg;
-        blocks.get(xy).isblocken=true;
+        blocks[block_i].get(xy).img=ObsBreakImg;
+        blocks[block_i].get(xy).isblocken=true;
         charImg.src="../img/char_breaking.png"  
         //set.delete(xy);
 
         if(break_cnt==3){ //테스트용~ 나중에 수정할 것
           backgroundImg.src="../img/space_back3.png"
+          block_i++;
         }
       
         dy-=5; //격파 성공시 y값 상승
