@@ -4,8 +4,8 @@ let gameCanvas;
 let context;
 let scoreText;
 
-let backgroundImg=new Image();
-backgroundImg.src="../img/space_back1.png"; //배경
+// let backgroundImg=new Image();
+// backgroundImg.src="../img/space_back1.png"; //배경
 let charImg=new Image();
 let ObstacleImg=new Image();
 charImg.src="../img/char_ready.png"
@@ -35,8 +35,14 @@ let blocks=[
   new Map(),
 ];
 let block_i=0;
-//배경 바뀌면 장애물도 바뀌게 하기
-//장애물이 바뀌면 격파할때 오류 생김.. 고쳐야함!! 일단 커밋
+
+let backgroundImg=[
+  new Image(),
+  new Image(),
+  new Image(),
+  new Image(),
+  new Image(),
+];
 
 function gameStart(){
   gameCanvas = document.getElementById("gameCanvas");
@@ -44,7 +50,9 @@ function gameStart(){
   gameCanvas.width=800;
   gameCanvas.height=600;
 
-  for(let i=0 ; i<blocks.length ; i++) createObstacle(i);
+  for(let i=0 ; i<blocks.length ; i++) createObstacle(i); 
+  for(let i=0 ; i<backgroundImg.length ; i++) backgroundImg[i].src="../img/space_back"+(i+1)+".png"
+
   let run=setTimeout(function runGame(){
     
     move();
@@ -52,20 +60,19 @@ function gameStart(){
 
     if(Spacekey==2){
       drawObs();  
-      if(char_y>430 && char_y<460){ char_y=100;  
-        
-
+      if(block_i>0 &&char_y>430 && char_y<460){ char_y=100;  
+        block_i--;
+        break_cnt=0;
         //배경 밑으로 내려오기
-        switch (break_cnt) {
+        /*switch (break_cnt) {
           case 0: case 1: case 2:  backgroundImg.src="../img/space_back1.png"; break;
           case 3: case 4: case 5: case 6:  backgroundImg.src="../img/space_back2.png";  break_cnt=0; break;
           case 7: case 8: case 9: case 10: case 11: backgroundImg.src="../img/space_back3.png"; break_cnt=3; break;
           case 12: backgroundImg.src="../img/space_back4.png"; break_cnt=7; break;
           default:backgroundImg.src="../img/space_back4.png"; break_cnt=7; break;
-          
-
-        } 
-    }
+          } */
+              
+        }
  
     }
    
@@ -95,7 +102,7 @@ function move() {
 }
 function draw() {
  
-  context.drawImage(backgroundImg, 0,0,800,600); // 배경 그리기
+  context.drawImage(backgroundImg[block_i], 0,0,800,600); // 배경 그리기
 
   context.drawImage(charImg, char_x,char_y, 100,100); // 캐릭터 그리기
 
@@ -138,11 +145,11 @@ function keyup() {
 function Space(){
   //처음 점프 할 때
       if(Spacekey==1){ 
-        Spacekey=2; dy=-7;   //처음 높이 상승 나중에 수정할 것
+        Spacekey=2; dy=-7;   //처음 높이  상승 나중에 수정할 것
         setInterval(() => dy+=0.1,200);  //높이가 0.2초마다 낮아짐
         charImg.src="../img/char_flying.png"; 
       
-        setTimeout(() =>   backgroundImg.src="../img/space_back2.png", 500); //0.5초후 점프하면 하늘배경으로
+        //setTimeout(() =>   backgroundImg.src="../img/space_back2.png", 500); //0.5초후 점프하면 하늘배경으로
       }  
       //격파 할 때
       else {
@@ -192,6 +199,7 @@ function chkBreak(){
         //set.delete(xy);
 
                //격파 갯수로 배경이 바뀜
+               /*
                switch (break_cnt) {
                 case 3:char_y=300; backgroundImg.src="../img/space_back3.png";
                 block_i++; break;
@@ -200,8 +208,11 @@ function chkBreak(){
                 case 12:char_y=300; backgroundImg.src="../img/space_back5.png"
                 block_i++; break;
   
-              } 
-          
+              } */
+          if(break_cnt>=3){
+            break_cnt=0;
+            block_i++;
+          }
 
 
       
