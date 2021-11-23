@@ -52,7 +52,23 @@ function gameStart(){
 
     if(Spacekey==2){
       drawObs();  
+      if(char_y>430 && char_y<460){ char_y=100;  
+        
+
+        //배경 밑으로 내려오기
+        switch (break_cnt) {
+          case 0: case 1: case 2:  backgroundImg.src="../img/space_back1.png"; break;
+          case 3: case 4: case 5: case 6:  backgroundImg.src="../img/space_back2.png";  break_cnt=0; break;
+          case 7: case 8: case 9: case 10: case 11: backgroundImg.src="../img/space_back3.png"; break_cnt=3; break;
+          case 12: backgroundImg.src="../img/space_back4.png"; break_cnt=7; break;
+          default:backgroundImg.src="../img/space_back4.png"; break_cnt=7; break;
+          
+
+        } 
     }
+ 
+    }
+   
 
     run=setTimeout(runGame,1);
   },1);
@@ -100,8 +116,8 @@ function drawObs(){
 function keydown() {
   keycode=event.keyCode;
   switch(keycode){
-    case 37:dx=-2; break; //좌
-    case 39:dx=2; break; //우
+    case 37:dx=-3; break; //좌
+    case 39:dx=3; break; //우
     case 32: Space(); break; //스페이스
     
   }
@@ -123,7 +139,7 @@ function Space(){
   //처음 점프 할 때
       if(Spacekey==1){ 
         Spacekey=2; dy=-7;   //처음 높이 상승 나중에 수정할 것
-        setInterval(() => dy++,200);  //높이가 0.5초마다 낮아짐
+        setInterval(() => dy+=0.1,200);  //높이가 0.2초마다 낮아짐
         charImg.src="../img/char_flying.png"; 
       
         setTimeout(() =>   backgroundImg.src="../img/space_back2.png", 500); //0.5초후 점프하면 하늘배경으로
@@ -132,8 +148,8 @@ function Space(){
       else {
         charImg.src="../img/char_kick.png"; 
         chkBreak();
-        
-        setInterval(() => dy++,500);
+     
+        setInterval(() =>  dy+=0.1,500);
         setTimeout(() => charImg.src="../img/char_flying.png", 200);
      
       }
@@ -145,7 +161,7 @@ function createObstacle(b_i){
   let x=[0,100,200,300,400,500,600,700];
   let y=[300,100,200];
 
-  for(let i=0 ; i<10 ; ){
+  for(let i=0 ; i<20 ; ){
     Obs_x=Math.floor(Math.random() * 8);
     Obs_y= Math.floor(Math.random() * 3);
   
@@ -175,10 +191,19 @@ function chkBreak(){
         charImg.src="../img/char_breaking.png"  
         //set.delete(xy);
 
-        if(break_cnt==3){ //테스트용~ 나중에 수정할 것
-          backgroundImg.src="../img/space_back3.png"
-          block_i++;
-        }
+               //격파 갯수로 배경이 바뀜
+               switch (break_cnt) {
+                case 3:char_y=300; backgroundImg.src="../img/space_back3.png";
+                block_i++; break;
+                case 7: char_y=300;backgroundImg.src="../img/space_back4.png"; 
+                block_i++; break;
+                case 12:char_y=300; backgroundImg.src="../img/space_back5.png"
+                block_i++; break;
+  
+              } 
+          
+
+
       
         dy-=5; //격파 성공시 y값 상승
         
