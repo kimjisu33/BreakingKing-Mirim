@@ -22,13 +22,11 @@ margin-left: 400px;
     }
 
 .map{
-box-shadow: 20px 20px;
+box-shadow: 20px 20px black;
 border-radius: 10px;
 margin-left: 100px;
     }
 
-a:hover{
-background-color: aqua;
-    }
+
            
         
