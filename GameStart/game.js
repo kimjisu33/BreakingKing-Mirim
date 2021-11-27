@@ -24,7 +24,7 @@ let break_cnt=0; //격파갯수
 setInterval(dy=2,1);
 
 let bg_x=0;
-let bg_y=-2679;
+let bg_y=-2680;
 
 let score=0;
 
@@ -49,7 +49,7 @@ function gameStart(){
     
     move();
     draw();
-    bg_check=Spacekey==2 && bg_y<0 && bg_y >-2680;
+    bg_check=Spacekey==2 && bg_y<0 && bg_y >=-2680;
     if(bg_check){
       drawObs();
       if(!bloke_chek)createObstacle();
@@ -80,7 +80,7 @@ function draw() {
   context.clearRect(0,0,800,600);
   context.drawImage(backgroundImg, 0,bg_y,800,3282); // 배경 그리기
   if(bg_check){
-    if(time<300) bg_y+=4;
+    if(time<200) bg_y+=5;
     else bg_y-=5;
   }
   if(bloke_chek) bg_y+=10;
@@ -91,7 +91,7 @@ function draw() {
 function drawObs(){
   for(let i=0 ; i<block_list.length ; i++){ //장애물 그리기
     context.drawImage(block_list[i].img, block_list[i].x, block_list[i].y, 100,100);
-    if(time<300) block_list[i].y+=4;
+    if(time<200) block_list[i].y+=5;
     else block_list[i].y-=5;
     if(bloke_chek)block_list[i].y+=10;
     if(block_list[i].isblocken) //setTimeout(() => block_list.splice(i,1) , 100); //격파할때 이미지 바꾸는건 나중에 수정하기
@@ -122,13 +122,13 @@ function Space(){
 
 //장애물 생성
 function createObstacle(){
-  if(time%60!=0) return; //블럭 생성 간격 주기
+  if(time%30!=0) return; //블럭 생성 간격 주기
 
   let blocks;
   let x=[0,100,200,300,400,500,600,700];
   let set=new Set(); //중복처리 set
 
-  for(let i=0 ; i<4 ; ){ //한줄에 블록 5개만 생성
+  for(let i=0 ; i<7 ; ){ //한줄에 블록 5개만 생성
     Obs_x=Math.floor(Math.random() * 8);
   
     if(set.has(Obs_x)) continue; //중복 검사
@@ -151,10 +151,10 @@ function chkBreak(){
   scoreText=document.getElementById("score");
   for (let i=0 ; i<block_list.length ; i++) {
       //격파성공하면
-    let check=char_y+dy>=block_list[i].y-40 
-              && char_y+dy<=block_list[i].y+40 
-              && char_x+dx>=block_list[i].x-40 
-              && char_x+dx<=block_list[i].x+40;
+    let check=char_y+dy>=block_list[i].y-50 
+              && char_y+dy<=block_list[i].y+50 
+              && char_x+dx>=block_list[i].x-50 
+              && char_x+dx<=block_list[i].x+50;
     if(check){
 
       block_list[i].img=ObsBreakImg;
