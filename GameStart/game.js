@@ -4,8 +4,8 @@ let gameCanvas;
 let context;
 let scoreText;
 
-// let backgroundImg=new Image();
-// backgroundImg.src="../img/space_back1.png"; //배경
+let backgroundImg=new Image();
+backgroundImg.src="../img/space_map.png"; //배경
 let charImg=new Image();
 let ObstacleImg=new Image();
 charImg.src="../img/char_ready.png"
@@ -23,103 +23,148 @@ let keycode;
 let break_cnt=0; //격파갯수
 setInterval(dy=2,1);
 
+let bg_x=0;
+let bg_y=-2680;
+
 let score=0;
 
-//let blocks=new Map();
 
-let blocks=[
-  new Map(),
-  new Map(),
-  new Map(),
-  new Map(),
-  new Map(),
-];
-let block_i=0;
+let block_list=[];
+//let block_i=0;
 
-let backgroundImg=[
-  new Image(),
-  new Image(),
-  new Image(),
-  new Image(),
-  new Image(),
-];
-
+let time=0;
+let run;
 function gameStart(){
   gameCanvas = document.getElementById("gameCanvas");
   context = gameCanvas.getContext("2d");
   gameCanvas.width=800;
   gameCanvas.height=600;
 
-  for(let i=0 ; i<blocks.length ; i++) createObstacle(i); 
-  for(let i=0 ; i<backgroundImg.length ; i++) backgroundImg[i].src="../img/space_back"+(i+1)+".png"
 
-  let run=setTimeout(function runGame(){
+  run=setTimeout(function runGame(){
     
     move();
     draw();
 
     if(Spacekey==2){
-      drawObs();  
-      if(block_i>0 &&char_y>430 && char_y<460){ char_y=100;  
-        block_i--;
-        break_cnt=0;
-        //배경 밑으로 내려오기
-        /*switch (break_cnt) {
-          case 0: case 1: case 2:  backgroundImg.src="../img/space_back1.png"; break;
-          case 3: case 4: case 5: case 6:  backgroundImg.src="../img/space_back2.png";  break_cnt=0; break;
-          case 7: case 8: case 9: case 10: case 11: backgroundImg.src="../img/space_back3.png"; break_cnt=3; break;
-          case 12: backgroundImg.src="../img/space_back4.png"; break_cnt=7; break;
-          default:backgroundImg.src="../img/space_back4.png"; break_cnt=7; break;
-          } */
-              
-        }
- 
+      //createObstacle();
+      drawObs();
+      createObstacle();
     }
    
 
     run=setTimeout(runGame,1);
   },1);
-
-
-
-  //setInterval(runGame,1);
 }
 
-/*
-function runGame(){
-  move();
-  draw();
-}*/
+
 
 function move() {
   if(char_x+dx>0 && char_x+dx<700 ){
     char_x+=dx; //캐릭터 좌우 캔버스 안나가게 하기
   }
 
-  if( char_y+dy>0 && char_y+dy<470){
+  if( char_y+dy>200 && char_y+dy<470){ //위아래 제한
     char_y+=dy;
   }
 }
-function draw() {
- 
-  context.drawImage(backgroundImg[block_i], 0,0,800,600); // 배경 그리기
 
+function draw() {
+  context.clearRect(0,0,800,600);
+  context.drawImage(backgroundImg, 0,bg_y,800,3282); // 배경 그리기
+  if(Spacekey==2){
+    bg_y+=3;
+  }
   context.drawImage(charImg, char_x,char_y, 100,100); // 캐릭터 그리기
 
-  // for(let block of set){ //장애물 그리기
-  //   context.drawImage(ObstacleImg,block.x, block.y, 100,100);
-  // }
-  //context.drawImage(ObstacleImg,block.x, block.y,100,100);
-  //context.fillText(score,10, 40);
 }
 
 function drawObs(){
-
-  for(let key of blocks[block_i].keys()){ //장애물 그리기
-    context.drawImage(blocks[block_i].get(key).img,blocks[block_i].get(key).x, blocks[block_i].get(key).y, 100,100);
-    if(blocks[block_i].get(key).isblocken) setTimeout(() => blocks[block_i].delete(key), 100);
+  
+  for(let i=0 ; i<block_list.length ; i++){ //장애물 그리기
+    context.drawImage(block_list[i].img, block_list[i].x, block_list[i].y, 100,100);
+    if(Spacekey==2) block_list[i].y+=3;
+    if(block_list[i].isblocken) //setTimeout(() => block_list.splice(i,1) , 100); //격파할때 이미지 바꾸는건 나중에 수정하기
+    block_list.splice(i,1);
   }
 }
+
+
+
+//점프할 때 , 격파할 때
+function Space(){
+  //처음 점프 할 때
+      if(Spacekey==1){ 
+        Spacekey=2; dy=-7; //처음 높이  상승
+        //배경 움직이기
+        //setInterval(() => bg_y+=0.1,200); //높이가 0.2초마다 낮아짐
+        charImg.src="../img/char_flying.png"; 
+      
+      }  
+      //격파 할 때
+      else {
+        charImg.src="../img/char_kick.png"; 
+        chkBreak();
+     
+        //setInterval(() =>  dy+=0.1 ,500);
+        setTimeout(() => charImg.src="../img/char_flying.png", 200);
+     
+      }
+   
+}
+
+//장애물 생성
+function createObstacle(){
+  let result=Math.floor(Math.random()*100);
+  if(result != 1 && result  !=2 ) return; //블록 생성되는 간격 주기
+
+  let blocks;
+  let x=[0,100,200,300,400,500,600,700];
+  let set=new Set(); //중복처리 set
+
+  for(let i=0 ; i<4 ; ){ //한줄에 블록 5개만 생성
+    Obs_x=Math.floor(Math.random() * 8);
+  
+    if(set.has(Obs_x)) continue; //중복 검사
+
+    blocks={
+      x: x[Obs_x],
+      y: -100,
+      img: ObstacleImg,
+      isblocken: false,
+    };
+    i++;
+    set.add(Obs_x);
+    block_list.push(blocks);
+  }
+  
+}
+
+
+function chkBreak(){
+  scoreText=document.getElementById("score");
+  for (let i=0 ; i<block_list.length ; i++) {
+      //격파성공하면
+    let check=char_y+dy>=block_list[i].y-40 
+              && char_y+dy<=block_list[i].y+40 
+              && char_x+dx>=block_list[i].x-40 
+              && char_x+dx<=block_list[i].x+40;
+    if(check){
+
+       block_list[i].img=ObsBreakImg;
+       block_list[i].isblocken=true;
+      charImg.src="../img/char_breaking.png"  
+
+       // bg_y+=5; //격파 성공시 y값 상승
+        
+        score+=10;
+        scoreText.innerHTML="점수 : "+score;
+  
+    } 
+  }
+ 
+}
+
 function keydown() {
   keycode=event.keyCode;
   switch(keycode){
@@ -139,90 +184,3 @@ function keyup() {
     case 32:dy=0; break; //스페이스
   }
 }
-
-
-//점프할 때 , 격파할 때
-function Space(){
-  //처음 점프 할 때
-      if(Spacekey==1){ 
-        Spacekey=2; dy=-7;   //처음 높이  상승 나중에 수정할 것
-        setInterval(() => dy+=0.1,200);  //높이가 0.2초마다 낮아짐
-        charImg.src="../img/char_flying.png"; 
-      
-        //setTimeout(() =>   backgroundImg.src="../img/space_back2.png", 500); //0.5초후 점프하면 하늘배경으로
-      }  
-      //격파 할 때
-      else {
-        charImg.src="../img/char_kick.png"; 
-        chkBreak();
-     
-        setInterval(() =>  dy+=0.1,500);
-        setTimeout(() => charImg.src="../img/char_flying.png", 200);
-     
-      }
-   
-}
-
-//장애물 생성
-function createObstacle(b_i){
-  let x=[0,100,200,300,400,500,600,700];
-  let y=[300,100,200];
-
-  for(let i=0 ; i<20 ; ){
-    Obs_x=Math.floor(Math.random() * 8);
-    Obs_y= Math.floor(Math.random() * 3);
-  
-    if(blocks[b_i].has(`${Obs_x}${Obs_y}`)) continue;
-
-    blocks[b_i].set(`${Obs_x}${Obs_y}`,{
-      x: x[Obs_x],
-      y: y[Obs_y],
-      img:ObstacleImg,
-      isblocken: false,
-    });
-    i++;
-  } 
-  
-}
-
-
-function chkBreak(){
-  scoreText=document.getElementById("score");
-  for (let xy of blocks[block_i].keys()) {
-      //격파성공하면
-    if(char_y+dy>=blocks[block_i].get(xy).y-40 && char_y+dy<=blocks[block_i].get(xy).y+40 && char_x+dx>=blocks[block_i].get(xy).x-40 && char_x+dx<=blocks[block_i].get(xy).x+40){
-        break_cnt++;
-
-        blocks[block_i].get(xy).img=ObsBreakImg;
-        blocks[block_i].get(xy).isblocken=true;
-        charImg.src="../img/char_breaking.png"  
-        //set.delete(xy);
-
-               //격파 갯수로 배경이 바뀜
-               /*
-               switch (break_cnt) {
-                case 3:char_y=300; backgroundImg.src="../img/space_back3.png";
-                block_i++; break;
-                case 7: char_y=300;backgroundImg.src="../img/space_back4.png"; 
-                block_i++; break;
-                case 12:char_y=300; backgroundImg.src="../img/space_back5.png"
-                block_i++; break;
-  
-              } */
-          if(break_cnt>=3){
-            break_cnt=0;
-            block_i++;
-          }
-
-
-      
-        dy-=5; //격파 성공시 y값 상승
-        
-        score+=10;
-        scoreText.innerHTML="점수 : "+score;
-  
-    } 
-  }
- 
-}
-
