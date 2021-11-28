@@ -43,7 +43,7 @@ let Obs_x=0; //장애물 x 좌표
 let Obs_y=0; //장애물 y 좌표
 let dx=0;
 let dy=0;
-let Spacekey=1; //스페이스 종류 판단
+let Spacekey=-1; //스페이스 종류 판단
 let keycode;
 let break_cnt=0; //격파갯수
 
@@ -105,7 +105,7 @@ function gameStart(){
       dy=5;
       charImg.src="../img/char_ready.png";
       bg_y=-2680;
-      //if(bak.isblocken==false)popup_over();
+     // if(bak.isblocken==false)popup_over();
     }
     run=setTimeout(runGame,1);
   },1);
@@ -126,14 +126,20 @@ function draw() {
   context.clearRect(0,0,800,600);
   context.drawImage(backgroundImg, 0,bg_y,800,3282); // 배경 그리기
   if(bg_check){
-    if(time<200) bg_y+=5;
+    
+    if(time<200){ bg_y+=5;}
     else bg_y-=5;
   }
-  if(bloke_chek) bg_y+=15;
-  if(trampoline_check) bg_y+=20;
+  if(bloke_chek){my-=0.3; bg_y+=15;}
+  if(trampoline_check) {my-=0.5; bg_y+=20;}
   if(bg_y>0) bg_y=-5;
+ 
   context.drawImage(charImg, char_x,char_y, 100,100); // 캐릭터 그리기
-
+ 
+ if(Spacekey==0){
+  jumpguage();
+ }
+ 
 }
 
 function drawObs(){
@@ -161,22 +167,28 @@ function drawObs(){
 }
 
 
+
+
 //점프할 때 , 격파할 때
 function Space(){
   //처음 점프 할 때
-      if(Spacekey==1){ 
-        Spacekey=2; dy=-7; //처음 높이  상승
-        //my-=1;
-        //setInterval(() =>  my+=0.2,1000);
+
+      if(Spacekey==-1){
+        setTimeout(() => {
+          Spacekey=0; 
+        }, 500);
+      }
+      else if(Spacekey==1){ 
+        Spacekey=2;
         charImg.src="../img/char_flying.png"; 
       
       }  
       //격파 할 때
       else {
+        setInterval(() => my=0.5, 100);
         a_kick.play(); 
         charImg.src="../img/char_kick.png"; 
         chkBreak();
-    
         setTimeout(() => charImg.src="../img/char_flying.png", 200);
      
       }
@@ -227,6 +239,9 @@ function createObstacle(){
 
 
 function chkBreak(){
+
+  let popup1=false;
+
   for (let i=0 ; i<trampoline_list.length ; i++) {
      let check=char_y+dy>=trampoline_list[i].y-60 
             && char_y+dy<=trampoline_list[i].y+60 
@@ -244,7 +259,6 @@ function chkBreak(){
               && char_x+dx>=block_list[i].x-60 
               && char_x+dx<=block_list[i].x+60;
     if(check){
-
       block_list[i].img=ObsBreakImg;
       block_list[i].isblocken=true;
       charImg.src="../img/char_breaking.png"  
@@ -253,6 +267,7 @@ function chkBreak(){
       bloke_chek=true;
     }
     
+    
       //박 격파 성공 
       let clear_check=char_y+dy>=bak.y-100 
               && char_y+dy<=bak.y+100 
@@ -260,12 +275,16 @@ function chkBreak(){
               && char_x+dx<=bak.x+100;
       if(clear_check){
           clearImg.src="../img/박격파.png";
-          a_clear.play(); 
-          setTimeout(() =>  popup_clear(), 1000);
+          a_clear.play();
+          popup1=true; 
+         break;
           
       }
   }
- 
+  if(popup1==true){
+    setTimeout(() =>  popup_clear(), 1000);
+  }
+
 }
 
 function keydown() {
@@ -357,3 +376,36 @@ function keyup() {
       window.open(url, "", option);
     }
     
+
+    //점프게이지
+let jump_x=250, jump_y=20; let jump=0;
+let z=0;
+function jumpguage(){
+    if(jump_x<=500 && z==0){
+      jump_x+=10;
+      if(jump_x==500) z=1;
+    }
+    else if(z==1) {
+      jump_x-=10;
+      if(jump_x==250)z=0;
+    }
+    context.drawImage(jumpguageImg, 250,20, 300,20);
+    context.drawImage(miniImg, jump_x,20, 20,20);
+
+if(keycode==13){
+  z=3;
+  context.drawImage(miniImg, jump_x,20, 20,20);
+``
+
+  //구간에 따라 y좌표 주기
+  if(jump_x>=250 && jump_x<=300 || jump_x>=450 && jump_x<=500) jump=-4;
+  else if(jump_x>300 && jump_x<350 || jump_x>400 && jump_x<450) jump=-6;
+  else if(jump_x>=350 && jump_x<=400) jump=-8;
+
+  setTimeout(() => {
+    Spacekey=1;
+  }, 300); 
+}
+}
+
+//점프게이지 좌표, 게임오버, 현재위치 좌표
