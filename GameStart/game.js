@@ -79,6 +79,8 @@ function gameStart(){
   gameCanvas.width=800;
   gameCanvas.height=600;
 
+  let gameover=true;
+
   for(let i=0 ; i<15 ; i++)createObstacle();
 
   run=setTimeout(function runGame(){
@@ -101,11 +103,15 @@ function gameStart(){
         time_temp=0;
       }
     }
-    else if(bg_y<0){
+    else if(Spacekey==2 && bg_y<0){
       dy=5;
       charImg.src="../img/char_ready.png";
       bg_y=-2680;
-      //if(bak.isblocken==false)popup_over();
+      if(gameover&&bak.isblocken==false){
+        popup_over();
+        gameover=false;
+        //clearTimeout(run);
+      } 
     }
     run=setTimeout(runGame,1);
   },1);
@@ -346,14 +352,15 @@ function keyup() {
     //게임오버
     function popup_over(){
       let url="gameover.html";
-      let option="width=1000, height=520, top=100 left=300"
+      let option="width=1000, height=520, top=100 left=300 location=no";
+      
       window.open(url, "", option);
     }
     
     //게임클리어
     function popup_clear(){
       let url="gameclear.html";
-      let option="width=1000, height=520, top=100 left=300"
+      let option="width=1000, height=520, top=100 left=300 location=no";
       window.open(url, "", option);
     }
     
