@@ -68,6 +68,11 @@ let bak={
   img: clearImg,
 };
 
+let trampoline_list=[];
+let trampolineImg=new Image();
+trampolineImg.src="../img/트램펄린.png";
+let trampoline_check=false;
+
 function gameStart(){
   gameCanvas = document.getElementById("gameCanvas");
   context = gameCanvas.getContext("2d");
@@ -89,9 +94,10 @@ function gameStart(){
     if(bg_check){
       drawObs();
       time++;
-      if(bloke_chek) time_temp+=7;
+      if(bloke_chek||trampoline_check) time_temp+=7;
       if(time_temp>300) {
         bloke_chek=false;
+        trampoline_check=false;
         time_temp=0;
       }
     }
@@ -99,7 +105,7 @@ function gameStart(){
       dy=5;
       charImg.src="../img/char_ready.png";
       bg_y=-2680;
-      popup_over();
+      //if(bak.isblocken==false)popup_over();
     }
     run=setTimeout(runGame,1);
   },1);
@@ -124,23 +130,33 @@ function draw() {
     else bg_y-=5;
   }
   if(bloke_chek) bg_y+=15;
+  if(trampoline_check) bg_y+=20;
   if(bg_y>0) bg_y=-5;
   context.drawImage(charImg, char_x,char_y, 100,100); // 캐릭터 그리기
 
 }
 
 function drawObs(){
-  
+  for(let i=0 ; i<trampoline_list.length ; i++){ //장애물 그리기
+    context.drawImage(trampoline_list[i].img, trampoline_list[i].x, trampoline_list[i].y, 100,100);
+    if(time<200) trampoline_list[i].y+=5;
+    else trampoline_list[i].y-=5;
+    if(bloke_chek)trampoline_list[i].y+=13;
+    if(trampoline_check) trampoline_list[i].y+=20;
+    if(trampoline_list[i].isUsed) trampoline_list.splice(i,1);
+  }
   for(let i=0 ; i<block_list.length ; i++){ //장애물 그리기
     context.drawImage(block_list[i].img, block_list[i].x, block_list[i].y, 100,100);
     if(time<200) block_list[i].y+=5;
     else block_list[i].y-=5;
-    if(bloke_chek)block_list[i].y+=15;
+    if(bloke_chek)block_list[i].y+=13;
+    if(trampoline_check) block_list[i].y+=20;
     if(block_list[i].isblocken) block_list.splice(i,1);//setTimeout(() => block_list.splice(i,1) , 100); //격파할때 이미지 바꾸는건 나중에 수정하기 
   }
   if(time<200) bak.y+=5;
   else bak.y-=5;
-  if(bloke_chek)bak.y+=15;
+  if(bloke_chek)bak.y+=13;
+  if(trampoline_check) bak.y+=20;
   context.drawImage(bak.img, bak.x, bak.y, 200,200);
 }
 
@@ -168,21 +184,22 @@ function Space(){
 }
 
 //장애물 생성
-let y_interval=0;
+let block_interval=0;
+let trampoline_interval=0;
 function createObstacle(){
 
   let blocks;
   let x=[0,100,200,300,400,500,600,700];
   let set=new Set(); //중복처리 set
 
-  for(let i=0 ; i<7 ; ){ //한줄에 블록 4개만 생성
+  for(let i=0 ; i<4 ; ){ //한줄에 블록 4개만 생성
     Obs_x=Math.floor(Math.random() * 8);
   
     if(set.has(Obs_x)) continue; //중복 검사
 
     blocks={
       x: x[Obs_x],
-      y: y_interval,
+      y: block_interval,
       img: ObstacleImg,
       isblocken: false,
     };
@@ -191,13 +208,35 @@ function createObstacle(){
     block_list.push(blocks);
     
   }
-  y_interval-=150;
+  block_interval-=150;
+
+  Obs_x=Math.floor(Math.random() * 8);
+  
+  if(!set.has(Obs_x)){
+    let t={
+      x: x[Obs_x],
+      y: trampoline_interval,
+      img: trampolineImg,
+      isUsed: false,
+    };
+    trampoline_list.push(t);
+  }
+    trampoline_interval-=150;
   
 }
 
 
 function chkBreak(){
-
+  for (let i=0 ; i<trampoline_list.length ; i++) {
+     let check=char_y+dy>=trampoline_list[i].y-60 
+            && char_y+dy<=trampoline_list[i].y+60 
+            && char_x+dx>=trampoline_list[i].x-60 
+            && char_x+dx<=trampoline_list[i].x+60;
+    if(check){
+      trampoline_list[i].isUsed=true;
+      trampoline_check=true;
+    }
+}
   for (let i=0 ; i<block_list.length ; i++) {
       //격파성공하면
     let check=char_y+dy>=block_list[i].y-60 
@@ -209,8 +248,6 @@ function chkBreak(){
       block_list[i].img=ObsBreakImg;
       block_list[i].isblocken=true;
       charImg.src="../img/char_breaking.png"  
-
-      bg_y+=5; //격파 성공시 y값 상승
       a_break.play(); 
       score+=10;
       bloke_chek=true;
