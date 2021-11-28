@@ -85,7 +85,7 @@ function gameStart(){
       if(!bloke_chek)createObstacle();
       time++;
       if(bloke_chek) time_temp+=7;
-      if(time_temp>500) {
+      if(time_temp>300) {
         bloke_chek=false;
         time_temp=0;
       }
@@ -113,7 +113,7 @@ function draw() {
     if(time<200) bg_y+=5;
     else bg_y-=5;
   }
-  if(bloke_chek) bg_y+=10;
+  if(bloke_chek) bg_y+=15;
   context.drawImage(charImg, char_x,char_y, 100,100); // 캐릭터 그리기
 
 }
@@ -123,7 +123,7 @@ function drawObs(){
     context.drawImage(block_list[i].img, block_list[i].x, block_list[i].y, 100,100);
     if(time<200) block_list[i].y+=5;
     else block_list[i].y-=5;
-    if(bloke_chek)block_list[i].y+=10;
+    if(bloke_chek)block_list[i].y+=15;
     if(block_list[i].isblocken) //setTimeout(() => block_list.splice(i,1) , 100); //격파할때 이미지 바꾸는건 나중에 수정하기
     block_list.splice(i,1);
   }
@@ -158,8 +158,9 @@ function Space(){
 }
 
 //장애물 생성
+let y_interval=0;
 function createObstacle(){
-  if(time%30!=0) return; //블럭 생성 간격 주기
+  //if(time%30!=0) return; //블럭 생성 간격 주기
 
   let blocks;
   let x=[0,100,200,300,400,500,600,700];
@@ -172,14 +173,16 @@ function createObstacle(){
 
     blocks={
       x: x[Obs_x],
-      y: -100,
+      y: y_interval,
       img: ObstacleImg,
       isblocken: false,
     };
     i++;
     set.add(Obs_x);
     block_list.push(blocks);
+    
   }
+  y_interval-=150;
   
 }
 
@@ -208,7 +211,6 @@ function chkBreak(){
       bg_y+=5; //격파 성공시 y값 상승
       a_break.play(); 
       score+=10;
-      scoreText.innerHTML="점수 : "+score;
       bloke_chek=true;
     } 
   }
