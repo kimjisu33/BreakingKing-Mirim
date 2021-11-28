@@ -46,7 +46,6 @@ let dy=0;
 let Spacekey=1; //스페이스 종류 판단
 let keycode;
 let break_cnt=0; //격파갯수
-setInterval(dy=2,1);
 
 let bg_x=0;
 let bg_y=-2680;
@@ -55,7 +54,6 @@ let score=0;
 
 
 let block_list=[];
-//let block_i=0;
 
 let time=0;
 let time_temp=0;
@@ -63,18 +61,26 @@ let run;
 let bg_check=false;
 let bloke_chek=false;
 
+let bak={
+  x:280,
+  y:-2400,
+  isblocken: false,
+  img: clearImg,
+};
+
 function gameStart(){
   gameCanvas = document.getElementById("gameCanvas");
   context = gameCanvas.getContext("2d");
   gameCanvas.width=800;
   gameCanvas.height=600;
 
-  for(let i=0 ; i<13 ; i++)createObstacle();
+  for(let i=0 ; i<15 ; i++)createObstacle();
+
   run=setTimeout(function runGame(){
     
     move();
     draw();
-    a_play.play();
+    //a_play.play();
     minimove(); //미니맵 움직임
     minidraw();
     scoredraw(); //점수판
@@ -82,7 +88,6 @@ function gameStart(){
     bg_check = Spacekey==2 && bg_y<0 && bg_y >=-2680;
     if(bg_check){
       drawObs();
-      //if(bg_y < -2000) createObstacle();
       time++;
       if(bloke_chek) time_temp+=7;
       if(time_temp>300) {
@@ -94,12 +99,10 @@ function gameStart(){
       dy=5;
       charImg.src="../img/char_ready.png";
       bg_y=-2680;
-      clearTimeout(run);
     }
     run=setTimeout(runGame,1);
   },1);
 }
-
 
 
 function move() {
@@ -120,27 +123,26 @@ function draw() {
     else bg_y-=5;
   }
   if(bloke_chek) bg_y+=15;
-  if(bg_y>0) bg_y=0;
+  if(bg_y>0) bg_y=-5;
   context.drawImage(charImg, char_x,char_y, 100,100); // 캐릭터 그리기
 
 }
 
 function drawObs(){
+  
   for(let i=0 ; i<block_list.length ; i++){ //장애물 그리기
     context.drawImage(block_list[i].img, block_list[i].x, block_list[i].y, 100,100);
     if(time<200) block_list[i].y+=5;
     else block_list[i].y-=5;
     if(bloke_chek)block_list[i].y+=15;
-    if(block_list[i].isblocken) //setTimeout(() => block_list.splice(i,1) , 100); //격파할때 이미지 바꾸는건 나중에 수정하기
-    block_list.splice(i,1);
+    if(block_list[i].isblocken) block_list.splice(i,1);//setTimeout(() => block_list.splice(i,1) , 100); //격파할때 이미지 바꾸는건 나중에 수정하기 
   }
+  if(time<200) bak.y+=5;
+  else bak.y-=5;
+  if(bloke_chek)bak.y+=15;
+  context.drawImage(bak.img, bak.x, bak.y, 200,200);
 }
 
-
-//마지막 맵일때 박그리기
-function cleardraw(){
-  context.drawImage(clearImg, bakX[bak_key],0, 100,100);
-}
 
 //점프할 때 , 격파할 때
 function Space(){
@@ -172,7 +174,7 @@ function createObstacle(){
   let x=[0,100,200,300,400,500,600,700];
   let set=new Set(); //중복처리 set
 
-  for(let i=0 ; i<7 ; ){ //한줄에 블록 5개만 생성
+  for(let i=0 ; i<7 ; ){ //한줄에 블록 4개만 생성
     Obs_x=Math.floor(Math.random() * 8);
   
     if(set.has(Obs_x)) continue; //중복 검사
@@ -194,20 +196,13 @@ function createObstacle(){
 
 
 function chkBreak(){
-  scoreText=document.getElementById("score");
 
-        //박 격파 성공 
-        // if(char_x+dx>=bakX[bak_key]-40 && char_x+dx<=bakX[bak_key]+40 && char_y+dy>=0 && char_y+dy<=40){
-        //   clearImg.src="../img/박격파.png"
-        //   setTimeout(() =>  clearImg.src="", 1000);
-        //   a_clear.play(); 
-        // }
   for (let i=0 ; i<block_list.length ; i++) {
       //격파성공하면
-    let check=char_y+dy>=block_list[i].y-50 
-              && char_y+dy<=block_list[i].y+50 
-              && char_x+dx>=block_list[i].x-50 
-              && char_x+dx<=block_list[i].x+50;
+    let check=char_y+dy>=block_list[i].y-60 
+              && char_y+dy<=block_list[i].y+60 
+              && char_x+dx>=block_list[i].x-60 
+              && char_x+dx<=block_list[i].x+60;
     if(check){
 
       block_list[i].img=ObsBreakImg;
@@ -218,18 +213,20 @@ function chkBreak(){
       a_break.play(); 
       score+=10;
       bloke_chek=true;
-    } 
+    }
+    
+      //박 격파 성공 
+      let clear_check=char_y+dy>=bak.y-100 
+              && char_y+dy<=bak.y+100 
+              && char_x+dx>=bak.x-100 
+              && char_x+dx<=bak.x+100;
+      if(clear_check){
+          clearImg.src="../img/박격파.png";
+          //setTimeout(() =>  clearImg.src="", 1000);
+          a_clear.play(); 
+      }
   }
  
-}
-
-
-//박 생성
-let bak=new Set();
-let bak_key=Math.floor(Math.random() * 8);
-let bakX=[0,100,200,300,400,500,600,700];
-function cleardraw(){
-  context.drawImage(clearImg, bakX[bak_key],0, 100,100);
 }
 
 function keydown() {
