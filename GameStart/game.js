@@ -73,11 +73,14 @@ let trampolineImg=new Image();
 trampolineImg.src="../img/트램펄린.png";
 let trampoline_check=false;
 
+
+
 function gameStart(){
   gameCanvas = document.getElementById("gameCanvas");
   context = gameCanvas.getContext("2d");
   gameCanvas.width=800;
   gameCanvas.height=600;
+
 
   for(let i=0 ; i<15 ; i++)createObstacle();
 
@@ -105,7 +108,8 @@ function gameStart(){
       dy=5;
       charImg.src="../img/char_ready.png";
       bg_y=-2680;
-     // if(bak.isblocken==false)popup_over();
+      
+   
     }
     run=setTimeout(runGame,1);
   },1);
@@ -127,7 +131,7 @@ function draw() {
   context.drawImage(backgroundImg, 0,bg_y,800,3282); // 배경 그리기
   if(bg_check){
     
-    if(time<200){ bg_y+=5;}
+    if(time<jump){ bg_y+=5;}
     else bg_y-=5;
   }
   if(bloke_chek){my-=0.3; bg_y+=15;}
@@ -145,7 +149,7 @@ function draw() {
 function drawObs(){
   for(let i=0 ; i<trampoline_list.length ; i++){ //장애물 그리기
     context.drawImage(trampoline_list[i].img, trampoline_list[i].x, trampoline_list[i].y, 100,100);
-    if(time<200) trampoline_list[i].y+=5;
+    if(time<jump) trampoline_list[i].y+=5;
     else trampoline_list[i].y-=5;
     if(bloke_chek)trampoline_list[i].y+=13;
     if(trampoline_check) trampoline_list[i].y+=20;
@@ -153,13 +157,13 @@ function drawObs(){
   }
   for(let i=0 ; i<block_list.length ; i++){ //장애물 그리기
     context.drawImage(block_list[i].img, block_list[i].x, block_list[i].y, 100,100);
-    if(time<200) block_list[i].y+=5;
+    if(time<jump) block_list[i].y+=5;
     else block_list[i].y-=5;
     if(bloke_chek)block_list[i].y+=13;
     if(trampoline_check) block_list[i].y+=20;
     if(block_list[i].isblocken) block_list.splice(i,1);//setTimeout(() => block_list.splice(i,1) , 100); //격파할때 이미지 바꾸는건 나중에 수정하기 
   }
-  if(time<200) bak.y+=5;
+  if(time<jump) bak.y+=5;
   else bak.y-=5;
   if(bloke_chek)bak.y+=13;
   if(trampoline_check) bak.y+=20;
@@ -241,7 +245,6 @@ function createObstacle(){
 function chkBreak(){
 
   let popup1=false;
-
   for (let i=0 ; i<trampoline_list.length ; i++) {
      let check=char_y+dy>=trampoline_list[i].y-60 
             && char_y+dy<=trampoline_list[i].y+60 
@@ -284,6 +287,7 @@ function chkBreak(){
   if(popup1==true){
     setTimeout(() =>  popup_clear(), 1000);
   }
+
 
 }
 
@@ -353,9 +357,6 @@ function keyup() {
     
     function scoredraw() {
       context3.drawImage(scorebackImg,0,0,300,300);
-    
-     
-
       context3.drawImage(miniImg,125,240,50,50);
       context3.fillText(score,150, 200);
       
@@ -398,9 +399,9 @@ if(keycode==13){
 ``
 
   //구간에 따라 y좌표 주기
-  if(jump_x>=250 && jump_x<=300 || jump_x>=450 && jump_x<=500) jump=-4;
-  else if(jump_x>300 && jump_x<350 || jump_x>400 && jump_x<450) jump=-6;
-  else if(jump_x>=350 && jump_x<=400) jump=-8;
+  if(jump_x>=250 && jump_x<=300 || jump_x>=450 && jump_x<=500) jump=100;
+  else if(jump_x>300 && jump_x<350 || jump_x>400 && jump_x<450) jump=150;
+  else if(jump_x>=350 && jump_x<=400) jump=200;
 
   setTimeout(() => {
     Spacekey=1;
