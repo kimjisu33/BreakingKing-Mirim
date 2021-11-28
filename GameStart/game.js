@@ -11,19 +11,19 @@ let a_over = new Audio('../sound/게임오버.wav');
 let gaugeCanvas;
 let context2;
 let miniImg=new Image();
-miniImg.src="../img/char_score1.png"
+miniImg.src="../img/char_score1.png";
 let minibackImg=new Image();
-minibackImg.src="../img/space_map.png"
+minibackImg.src="../img/space_map.png";
 let scorebackImg=new Image();
-scorebackImg.src="../img/score_back.png"
+scorebackImg.src="../img/score_back.png";
 let clearImg=new Image();
-clearImg.src="../img/박.png"
+clearImg.src="../img/박.png";
 let mchar_y=550;
 let mchar_x=300;
 let mx=0;
 let my=0;
 let jumpguageImg=new Image();
-jumpguageImg.src="../img/게이지.png"
+jumpguageImg.src="../img/게이지.png";
 let scoreText;
 let gameCanvas;
 
@@ -33,10 +33,10 @@ let backgroundImg=new Image();
 backgroundImg.src="../img/space_map.png"; //배경
 let charImg=new Image();
 let ObstacleImg=new Image();
-charImg.src="../img/char_ready.png"
-ObstacleImg.src="../img/obstacle1.png"
+charImg.src="../img/char_ready.png";
+ObstacleImg.src="../img/obstacle1.png";
 let ObsBreakImg=new Image();
-ObsBreakImg.src="../img/obstacle1_break.png"
+ObsBreakImg.src="../img/obstacle1_break.png";
 let char_x=340; //캐릭터 x 좌표
 let char_y=470; //캐릭터 y 좌표
 let Obs_x=0; //장애물 x 좌표
@@ -69,7 +69,7 @@ function gameStart(){
   gameCanvas.width=800;
   gameCanvas.height=600;
 
-
+  for(let i=0 ; i<13 ; i++)createObstacle();
   run=setTimeout(function runGame(){
     
     move();
@@ -79,16 +79,22 @@ function gameStart(){
     minidraw();
     scoredraw(); //점수판
 
-    bg_check=Spacekey==2 && bg_y<0 && bg_y >=-2680;
+    bg_check = Spacekey==2 && bg_y<0 && bg_y >=-2680;
     if(bg_check){
       drawObs();
-      if(!bloke_chek)createObstacle();
+      //if(bg_y < -2000) createObstacle();
       time++;
       if(bloke_chek) time_temp+=7;
       if(time_temp>300) {
         bloke_chek=false;
         time_temp=0;
       }
+    }
+    else if(bg_y<0){
+      dy=5;
+      charImg.src="../img/char_ready.png";
+      bg_y=-2680;
+      clearTimeout(run);
     }
     run=setTimeout(runGame,1);
   },1);
@@ -114,6 +120,7 @@ function draw() {
     else bg_y-=5;
   }
   if(bloke_chek) bg_y+=15;
+  if(bg_y>0) bg_y=0;
   context.drawImage(charImg, char_x,char_y, 100,100); // 캐릭터 그리기
 
 }
@@ -160,7 +167,6 @@ function Space(){
 //장애물 생성
 let y_interval=0;
 function createObstacle(){
-  //if(time%30!=0) return; //블럭 생성 간격 주기
 
   let blocks;
   let x=[0,100,200,300,400,500,600,700];
