@@ -99,6 +99,7 @@ function gameStart(){
       dy=5;
       charImg.src="../img/char_ready.png";
       bg_y=-2680;
+      popup_over();
     }
     run=setTimeout(runGame,1);
   },1);
