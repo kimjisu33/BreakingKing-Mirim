@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GameOver</title>
+   <script src="game.js"></script>
+
+    <style>
+    body{
+    background-image: url('../img/gameclear_back.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    }
+ 
+    button{
+            
+    font-family: 'NeoDunggeunmo';
+    margin-right: 30px;
+    background-color: rgb(255, 226, 131);
+    font-size: 30px;
+    font-weight: 500;
+    width: 200px;
+    height: 50px;
+    border:0;
+    outline: 0;
+    cursor: pointer;
+    border-radius: 40px;
+
+    }
+
+    div{
+        margin-left: 270px;
+    }
+
+    button:hover{
+    background-color:  rgb(255, 213, 73);
+    }
+    p{
+        margin-left: 200px;
+        color:  white;
+        font-size: 50px;
+    }
+    </style>
+
+<script>
+
+function replay(){
+    opener.location.href='./game.html';
+    window.close();
+
+}
+function mainGo(){
+    opener.location.href='../main/index.html';
+    window.close();
+
+}
+
+document.write(score);
+  
+</script>
+
+    
+</head>
+<body>
+    <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    <div>
+        <p id=score_text>0</p>
+        <button id="replay"  onClick='replay()'>다시하기</button>
+        <button id="mainGo"  onClick='mainGo()'>메인화면</button></a>
+    </div>
+
+  
+</body>
+</html>

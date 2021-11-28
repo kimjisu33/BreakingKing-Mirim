@@ -222,8 +222,9 @@ function chkBreak(){
               && char_x+dx<=bak.x+100;
       if(clear_check){
           clearImg.src="../img/박격파.png";
-          //setTimeout(() =>  clearImg.src="", 1000);
           a_clear.play(); 
+          setTimeout(() =>  popup_clear(), 1000);
+          
       }
   }
  
@@ -303,4 +304,18 @@ function keyup() {
       
     }
     
+
+    //게임오버
+    function popup_over(){
+      let url="gameover.html";
+      let option="width=1000, height=520, top=100 left=300"
+      window.open(url, "", option);
+    }
+    
+    //게임클리어
+    function popup_clear(){
+      let url="gameclear.html";
+      let option="width=1000, height=520, top=100 left=300"
+      window.open(url, "", option);
+    }
     
