@@ -8,6 +8,10 @@ let a_score = new Audio('../sound/점수.wav');
 let a_clear = new Audio('../sound/게임클리어.wav');
 let a_play = new Audio('../sound/게임중.wav');
 let a_over = new Audio('../sound/게임오버.wav');
+let a_jump = new Audio('../sound/점프.wav');
+let a_guage = new Audio('../sound/게이지.mp3');
+
+
 let gaugeCanvas;
 let context2;
 let miniImg=new Image();
@@ -89,7 +93,7 @@ function gameStart(){
     
     move();
     draw();
-    //a_play.play();
+    a_play.play();
     minimove(); //미니맵 움직임
     minidraw();
     scoredraw(); //점수판
@@ -111,6 +115,7 @@ function gameStart(){
       bg_y=-2680;
       if(gameover&&!bak.isblocken){
         popup_over();
+        a_over.play();
         gameover=false;
       } 
     }
@@ -137,8 +142,8 @@ function draw() {
     if(time<jump){ bg_y+=5;}
     else bg_y-=5;
   }
-  if(bloke_chek){my-=0.3; bg_y+=15;}
-  if(trampoline_check) {my-=0.5; bg_y+=20;}
+  if(bloke_chek){my=-1; bg_y+=15;}
+  if(trampoline_check) {my=-3.5; bg_y+=20;}
   if(bg_y>0) bg_y=-5;
  
   context.drawImage(charImg, char_x,char_y, 100,100); // 캐릭터 그리기
@@ -175,25 +180,27 @@ function drawObs(){
 
 
 
-
+let start_my=0;
 //점프할 때 , 격파할 때
 function Space(){
   //처음 점프 할 때
 
       if(Spacekey==-1){
         setTimeout(() => {
-          Spacekey=0; 
+          Spacekey=0;   
         }, 500);
+     
       }
-      else if(Spacekey==1){ 
-        dy=-7;
+      else if(Spacekey==1){
+      
         Spacekey=2;
         charImg.src="../img/char_flying.png"; 
       
       }  
       //격파 할 때
       else {
-        setInterval(() => my=0.5, 100);
+        my=start_my;
+        setInterval(() => my=0.6,100 );
         a_kick.play(); 
         charImg.src="../img/char_kick.png"; 
         chkBreak();
@@ -202,6 +209,8 @@ function Space(){
       }
    
 }
+
+
 
 //장애물 생성
 let block_interval=0;
@@ -255,6 +264,7 @@ function chkBreak(){
             && char_x+dx>=trampoline_list[i].x-60 
             && char_x+dx<=trampoline_list[i].x+60;
     if(check){
+      a_jump.play();
       trampoline_list[i].isUsed=true;
       trampoline_check=true;
     }
@@ -271,6 +281,7 @@ function chkBreak(){
       charImg.src="../img/char_breaking.png"  
       a_break.play(); 
       score+=10;
+
       bloke_chek=true;
     }
     
@@ -385,6 +396,8 @@ function keyup() {
 let jump_x=250, jump_y=20; let jump=0;
 let z=0;
 function jumpguage(){
+
+  a_guage.play();
     if(jump_x<=500 && z==0){
       jump_x+=10;
       if(jump_x==500) z=1;
@@ -397,14 +410,21 @@ function jumpguage(){
     context.drawImage(miniImg, jump_x,20, 20,20);
 
 if(keycode==13){
+
   z=3;
   context.drawImage(miniImg, jump_x,20, 20,20);
-``
+
 
   //구간에 따라 y좌표 주기
-  if(jump_x>=250 && jump_x<=300 || jump_x>=450 && jump_x<=500) jump=100;
-  else if(jump_x>300 && jump_x<350 || jump_x>400 && jump_x<450) jump=150;
-  else if(jump_x>=350 && jump_x<=400) jump=200;
+  if(jump_x>=250 && jump_x<=300 || jump_x>=450 && jump_x<=500){
+    start_my=-3; jump=100;
+  } 
+  else if(jump_x>300 && jump_x<350 || jump_x>400 && jump_x<450) {
+    start_my=-4;jump=150;
+  }
+  else if(jump_x>=350 && jump_x<=400){
+    start_my=-5; jump=200;
+  }
 
   setTimeout(() => {
     Spacekey=1;
