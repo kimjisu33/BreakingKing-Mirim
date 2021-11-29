@@ -82,6 +82,7 @@ function gameStart(){
   gameCanvas.height=600;
 
 
+  let gameover =true;
   for(let i=0 ; i<15 ; i++)createObstacle();
 
   run=setTimeout(function runGame(){
@@ -104,12 +105,14 @@ function gameStart(){
         time_temp=0;
       }
     }
-    else if(bg_y<0){
+    else if(Spacekey==2 && bg_y<0){
       dy=5;
       charImg.src="../img/char_ready.png";
       bg_y=-2680;
-      
-   
+      if(gameover&&!bak.isblocken){
+        popup_over();
+        gameover=false;
+      } 
     }
     run=setTimeout(runGame,1);
   },1);
@@ -183,6 +186,7 @@ function Space(){
         }, 500);
       }
       else if(Spacekey==1){ 
+        dy=-7;
         Spacekey=2;
         charImg.src="../img/char_flying.png"; 
       
@@ -280,8 +284,7 @@ function chkBreak(){
           clearImg.src="../img/박격파.png";
           a_clear.play();
           popup1=true; 
-         break;
-          
+          bak.isblocken=true;
       }
   }
   if(popup1==true){
