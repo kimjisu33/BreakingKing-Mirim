@@ -31,6 +31,7 @@ jumpguageImg.src="../img/게이지.png";
 let scoreText;
 let gameCanvas;
 
+let context3=document.getElementById("scoreCanvas").getContext("2d");
 
 let context;
 let backgroundImg=new Image();
@@ -77,7 +78,12 @@ let trampolineImg=new Image();
 trampolineImg.src="../img/트램펄린.png";
 let trampoline_check=false;
 
-
+let gameover =false;
+let gameclear=false;
+let overImg=new Image();
+overImg.src="../img/gameover_back.png";
+let clearImg_bg=new Image();
+clearImg_bg.src="../img/gameclear_back.png";
 
 function gameStart(){
   gameCanvas = document.getElementById("gameCanvas");
@@ -86,11 +92,26 @@ function gameStart(){
   gameCanvas.height=600;
 
 
-  let gameover =true;
   for(let i=0 ; i<15 ; i++)createObstacle();
 
   run=setTimeout(function runGame(){
-    
+    if(gameover){
+      clearTimeout(run);
+      context.clearRect(0,0,800,600);
+      context.drawImage(overImg, 0,0,800,600);
+      context.font = "bold 50px Gulim";
+      context.fillStyle="white";
+      context.fillText(score, 360, 410);
+      return ;
+    }else if(gameclear){
+      clearTimeout(run);
+      context.clearRect(0,0,800,600);
+      context.drawImage(clearImg_bg, 0,0,800,600);
+      context.font = "bold 50px Gulim";
+      context.fillStyle="white";
+      context.fillText(score, 360, 410);
+      return ;
+    }
     move();
     draw();
     a_play.play();
@@ -113,14 +134,17 @@ function gameStart(){
       dy=5;
       charImg.src="../img/char_ready.png";
       bg_y=-2680;
-      if(gameover&&!bak.isblocken){
-        popup_over();
+      if(!gameover&&!bak.isblocken){
+        //popup_over();
         a_over.play();
-        gameover=false;
+        gameover=true;
       } 
     }
     run=setTimeout(runGame,1);
   },1);
+  
+  context.clearRect(0,0,800,600);
+  
 }
 
 
@@ -192,7 +216,7 @@ function Space(){
      
       }
       else if(Spacekey==1){
-      
+        setInterval(()=>dy=-5,200);
         Spacekey=2;
         charImg.src="../img/char_flying.png"; 
       
@@ -294,8 +318,9 @@ function chkBreak(){
       if(clear_check){
           clearImg.src="../img/박격파.png";
           a_clear.play();
-          popup1=true; 
+          //popup1=true; 
           bak.isblocken=true;
+          gameclear=true;
       }
   }
   if(popup1==true){
@@ -352,7 +377,6 @@ function keyup() {
       }
     }
     
-    let context3=document.getElementById("scoreCanvas").getContext("2d");
     
     
     //온로드 동시에 사용가능
@@ -381,6 +405,7 @@ function keyup() {
     function popup_over(){
       let url="gameover.html";
       let option="width=1000, height=520, top=100 left=300"
+      document.getElementById("score").value=score;
       window.open(url, "", option);
     }
     
