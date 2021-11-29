@@ -93,24 +93,30 @@ function gameStart(){
 
 
   for(let i=0 ; i<15 ; i++)createObstacle();
-
+  let a=0;
   run=setTimeout(function runGame(){
     if(gameover){
-      clearTimeout(run);
-      context.clearRect(0,0,800,600);
-      context.drawImage(overImg, 0,0,800,600);
-      context.font = "bold 50px Gulim";
-      context.fillStyle="white";
-      context.fillText(score, 360, 410);
-      return ;
+      a++;
+      if(a>100){
+        clearTimeout(run);
+        context.clearRect(0,0,800,600);
+        context.drawImage(overImg, 0,0,800,600);
+        context.font = "bold 50px Gulim";
+        context.fillStyle="white";
+        context.fillText(score, 360, 410);
+        return ;
+      }
     }else if(gameclear){
-      clearTimeout(run);
-      context.clearRect(0,0,800,600);
-      context.drawImage(clearImg_bg, 0,0,800,600);
-      context.font = "bold 50px Gulim";
-      context.fillStyle="white";
-      context.fillText(score, 360, 410);
-      return ;
+      a++;
+      if(a>300){
+        clearTimeout(run);
+        context.clearRect(0,0,800,600);
+        context.drawImage(clearImg_bg, 0,0,800,600);
+        context.font = "bold 50px Gulim";
+        context.fillStyle="white";
+        context.fillText(score, 360, 410);
+        return ;
+      }
     }
     move();
     draw();
