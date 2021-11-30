@@ -172,8 +172,8 @@ function draw() {
     if(time<jump){ bg_y+=5;}
     else bg_y-=5;
   }
-  if(bloke_chek){my=-2; bg_y+=15;}
-  if(trampoline_check) {my=-3.0; bg_y+=20;}
+  if(bloke_chek){my=-1; bg_y+=15;}
+  if(trampoline_check) {my=-3.5; bg_y+=20;}
   if(bg_y>0) bg_y=-5;
  
   context.drawImage(charImg, char_x,char_y, 100,100); // 캐릭터 그리기
@@ -230,7 +230,7 @@ function Space(){
       //격파 할 때
       else {
         my=start_my;
-        setInterval(() => my=0.7,100 );
+        setInterval(() => my=0.6,100 );
         a_kick.play(); 
         charImg.src="../img/char_kick.png"; 
         chkBreak();
@@ -324,6 +324,7 @@ function chkBreak(){
       if(clear_check){
           clearImg.src="../img/박격파.png";
           a_clear.play();
+        
           //popup1=true; 
           bak.isblocken=true;
           gameclear=true;
@@ -448,13 +449,13 @@ if(keycode==13){
 
   //구간에 따라 y좌표 주기
   if(jump_x>=250 && jump_x<=300 || jump_x>=450 && jump_x<=500){
-    start_my=-5; jump=100;
+    start_my=-3; jump=100;
   } 
   else if(jump_x>300 && jump_x<350 || jump_x>400 && jump_x<450) {
-    start_my=-6;jump=150;
+    start_my=-4;jump=150;
   }
   else if(jump_x>=350 && jump_x<=400){
-    start_my=-7; jump=200;
+    start_my=-5; jump=200;
   }
 
   setTimeout(() => {
