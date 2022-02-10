@@ -38,7 +38,7 @@ let backgroundImg=new Image();
 backgroundImg.src="../img/space_map.png"; //배경
 let charImg=new Image();
 let ObstacleImg=new Image();
-charImg.src="../img/char_ready.png";
+charImg.src="../img/space/char_ready.png";
 ObstacleImg.src="../img/obstacle1.png";
 let ObsBreakImg=new Image();
 ObsBreakImg.src="../img/obstacle1_break.png";
@@ -138,7 +138,8 @@ function gameStart(){
     }
     else if(Spacekey==2 && bg_y<0){
       dy=5;
-      charImg.src="../img/char_ready.png";
+      
+      charImg.src="../img/space/char_ready.png";
       bg_y=-2680;
       if(!gameover&&!bak.isblocken){
         //popup_over();
@@ -176,7 +177,7 @@ function draw() {
   if(trampoline_check) {my=-3.5; bg_y+=20;}
   if(bg_y>0) bg_y=-5;
  
-  context.drawImage(charImg, char_x,char_y, 100,100); // 캐릭터 그리기
+  context.drawImage(charImg, char_x,char_y, 200,150); // 캐릭터 그리기
  
  if(Spacekey==0){
   jumpguage();
@@ -224,7 +225,8 @@ function Space(){
       else if(Spacekey==1){
         setInterval(()=>dy=-5,200);
         Spacekey=2;
-        charImg.src="../img/char_flying.png"; 
+        
+        charImg.src="../img/space/char_flying.png"; 
       
       }  
       //격파 할 때
@@ -232,9 +234,9 @@ function Space(){
         my=start_my;
         setInterval(() => my=0.6,100 );
         a_kick.play(); 
-        charImg.src="../img/char_kick.png"; 
+        charImg.src="../img/space/char_rkick.png"; 
         chkBreak();
-        setTimeout(() => charImg.src="../img/char_flying.png", 200);
+        setTimeout(() => charImg.src="../img/space/char_flying.png", 200);
      
       }
    
@@ -308,7 +310,7 @@ function chkBreak(){
     if(check){
       block_list[i].img=ObsBreakImg;
       block_list[i].isblocken=true;
-      charImg.src="../img/char_breaking.png"  
+      charImg.src="../img/space/char_rkick.png"  
       a_break.play(); 
       score+=10;
 
