@@ -17,15 +17,12 @@ let context2;
 let miniImg=new Image();
 miniImg.src="../img/char_score1.png";
 let minibackImg=new Image();
-minibackImg.src="../img/space_map.png";
+minibackImg.src="../img/spacetest.png";
 let scorebackImg=new Image();
 scorebackImg.src="../img/score_back.png";
 let clearImg=new Image();
 clearImg.src="../img/박.png";
-let mchar_y=550;
-let mchar_x=300;
-let mx=0;
-let my=0;
+
 let jumpguageImg=new Image();
 jumpguageImg.src="../img/게이지.png";
 let scoreText;
@@ -35,7 +32,7 @@ let context3=document.getElementById("scoreCanvas").getContext("2d");
 
 let context;
 let backgroundImg=new Image();
-backgroundImg.src="../img/space_map.png"; //배경
+backgroundImg.src="../img/spacetest.png"; //배경
 let charImg=new Image();
 let ObstacleImg=new Image();
 charImg.src="../img/space/char_ready.png";
@@ -57,6 +54,10 @@ let bg_y=-2680;
 
 let score=0;
 
+
+
+//true 왼쪽 false 오른쪽
+let direction=true;
 
 let block_list=[];
 
@@ -121,7 +122,6 @@ function gameStart(){
     move();
     draw();
     a_play.play();
-    minimove(); //미니맵 움직임
     minidraw();
     scoredraw(); //점수판
 
@@ -173,8 +173,8 @@ function draw() {
     if(time<jump){ bg_y+=5;}
     else bg_y-=5;
   }
-  if(bloke_chek){my=-1; bg_y+=15;}
-  if(trampoline_check) {my=-3.5; bg_y+=20;}
+  if(bloke_chek){ bg_y+=15;}
+  if(trampoline_check) { bg_y+=20;}
   if(bg_y>0) bg_y=-5;
  
   context.drawImage(charImg, char_x,char_y, 200,150); // 캐릭터 그리기
@@ -211,7 +211,7 @@ function drawObs(){
 
 
 
-let start_my=0;
+
 //점프할 때 , 격파할 때
 function Space(){
   //처음 점프 할 때
@@ -231,10 +231,17 @@ function Space(){
       }  
       //격파 할 때
       else {
-        my=start_my;
-        setInterval(() => my=0.6,100 );
+   
+
         a_kick.play(); 
-        charImg.src="../img/space/char_rkick.png"; 
+
+        //좌우 구분
+        if(direction=true){
+          charImg.src="../img/space/char_lkick.png"; 
+        }
+        else {
+          charImg.src="../img/space/char_rkick.png"; 
+        } 
         chkBreak();
         setTimeout(() => charImg.src="../img/space/char_flying.png", 200);
      
@@ -310,6 +317,8 @@ function chkBreak(){
     if(check){
       block_list[i].img=ObsBreakImg;
       block_list[i].isblocken=true;
+
+      
       charImg.src="../img/space/char_rkick.png"  
       a_break.play(); 
       score+=10;
@@ -341,8 +350,8 @@ function chkBreak(){
 function keydown() {
   keycode=event.keyCode;
   switch(keycode){
-    case 37:dx=-3; mx=-2; break; //좌
-    case 39:dx=3;  mx=2; break; //우
+    case 37:dx=-3;  direction=true;  break; //좌
+    case 39:dx=3;  direction=false;  break; //우
     case 32: Space(); break; //스페이스
     
   }
@@ -352,13 +361,14 @@ function keydown() {
 function keyup() {
   keycode=event.keyCode;
   switch(keycode){
-    case 37:dx=0;  mx=0; break; //좌
-    case 39:dx=0;  mx=0; break; //우
+    case 37:dx=0;   break; //좌
+    case 39:dx=0;  break; //우
     case 32:dy=0; break; //스페이스
   }
 }
 
-    //추가할 것
+
+//미니맵
     function minimapStart(){
       gaugeCanvas = document.getElementById("gaugeCanvas");
       context2 = gaugeCanvas.getContext("2d");
@@ -368,22 +378,9 @@ function keyup() {
     }
     function minidraw() {
       context2.drawImage(minibackImg,0,0,800,600);
-      context2.drawImage(miniImg,mchar_x,mchar_y,200,30); // 사용자 위치 그리기
-      // 사용자 위치 그리기
     }
     
-    function minimove() {
-    
-      if( mchar_x+mx>0 && mchar_x+mx<550){
-        mchar_x+=mx;
-      }
-    
-    
-    
-      if( mchar_y+my>0 && mchar_y+my<550){
-        mchar_y+=my;
-      }
-    }
+  
     
     
     
@@ -425,7 +422,10 @@ function keyup() {
     }
     
 
-    //점프게이지
+
+
+
+//점프게이지
 let jump_x=250, jump_y=20; let jump=0;
 let z=0;
 function jumpguage(){
@@ -450,13 +450,13 @@ if(keycode==13){
 
   //구간에 따라 y좌표 주기
   if(jump_x>=250 && jump_x<=300 || jump_x>=450 && jump_x<=500){
-    start_my=-3; jump=100;
+  jump=100;
   } 
   else if(jump_x>300 && jump_x<350 || jump_x>400 && jump_x<450) {
-    start_my=-4;jump=150;
+    jump=150;
   }
   else if(jump_x>=350 && jump_x<=400){
-    start_my=-5; jump=200;
+    jump=200;
   }
 
   setTimeout(() => {
@@ -465,4 +465,3 @@ if(keycode==13){
 }
 }
 
-//점프게이지 좌표, 게임오버, 현재위치 좌표
