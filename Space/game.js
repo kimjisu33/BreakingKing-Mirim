@@ -49,8 +49,9 @@ let Spacekey=-1; //스페이스 종류 판단
 let keycode;
 let break_cnt=0; //격파갯수
 
+//이미지 시작 위치
 let bg_x=0;
-let bg_y=-2680;
+let bg_y=-5760;
 
 let score=0;
 
@@ -96,6 +97,7 @@ function gameStart(){
   for(let i=0 ; i<15 ; i++)createObstacle();
   let a=0;
   run=setTimeout(function runGame(){
+    //게임 오버 클리어 체크
     if(gameover){
       a++;
       if(a>100){
@@ -125,7 +127,7 @@ function gameStart(){
     minidraw();
     scoredraw(); //점수판
 
-    bg_check = Spacekey==2 && bg_y<0 && bg_y >=-2680;
+    bg_check = Spacekey==2 && bg_y<0 && bg_y >=-5760;
     if(bg_check){
       drawObs();
       time++;
@@ -140,7 +142,7 @@ function gameStart(){
       dy=5;
       
       charImg.src="../img/space/char_ready.png";
-      bg_y=-2680;
+      bg_y=-5760;
       if(!gameover&&!bak.isblocken){
         //popup_over();
         a_over.play();
@@ -167,7 +169,7 @@ function move() {
 
 function draw() {
   context.clearRect(0,0,800,600);
-  context.drawImage(backgroundImg, 0,bg_y,800,3282); // 배경 그리기
+  context.drawImage(backgroundImg, 0,bg_y,800,6360); // 배경 그리기
   if(bg_check){
     
     if(time<jump){ bg_y+=5;}
