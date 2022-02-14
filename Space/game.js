@@ -49,10 +49,14 @@ let Spacekey=-1; //스페이스 종류 판단
 let keycode;
 let break_cnt=0; //격파갯수
 
-//이미지 시작 위치
-let bg_x=0;
-let bg_y=-5760;
+//배경 위치 상수
+const c_bg_x=0;
+const c_bg_y=-5760;
+//배경 시작 위치
+let bg_x=c_bg_x;
+let bg_y=c_bg_y;
 
+//점수
 let score=0;
 
 
@@ -127,7 +131,7 @@ function gameStart(){
     minidraw();
     scoredraw(); //점수판
 
-    bg_check = Spacekey==2 && bg_y<0 && bg_y >=-5760;
+    bg_check = Spacekey==2 && bg_y<0 && bg_y >=c_bg_y;
     if(bg_check){
       drawObs();
       time++;
@@ -142,7 +146,7 @@ function gameStart(){
       dy=5;
       
       charImg.src="../img/space/char_ready.png";
-      bg_y=-5760;
+      bg_y=c_bg_y;
       if(!gameover&&!bak.isblocken){
         //popup_over();
         a_over.play();
