@@ -74,7 +74,7 @@ let bloke_chek=false;
 
 let bak={
   x:280,
-  y:-2400,
+  y:c_bg_y+300,
   isblocken: false,
   img: clearImg,
 };
@@ -98,7 +98,7 @@ function gameStart(){
   gameCanvas.height=600;
 
 
-  for(let i=0 ; i<15 ; i++)createObstacle();
+  for(let i=0 ; i<35 ; i++) createObstacle();
   let a=0;
   run=setTimeout(function runGame(){
     //게임 오버 클리어 체크
@@ -192,7 +192,7 @@ function draw() {
 }
 
 function drawObs(){
-  for(let i=0 ; i<trampoline_list.length ; i++){ //장애물 그리기
+  for(let i=0 ; i<trampoline_list.length ; i++){ //트램펄린 그리기
     context.drawImage(trampoline_list[i].img, trampoline_list[i].x, trampoline_list[i].y, 100,100);
     if(time<jump) trampoline_list[i].y+=5;
     else trampoline_list[i].y-=5;
@@ -316,10 +316,10 @@ function chkBreak(){
 }
   for (let i=0 ; i<block_list.length ; i++) {
       //격파성공하면
-    let check=char_y+dy>=block_list[i].y-60 
-              && char_y+dy<=block_list[i].y+60 
-              && char_x+dx>=block_list[i].x-60 
-              && char_x+dx<=block_list[i].x+60;
+    let check=char_y+dy>=block_list[i].y-70 
+              && char_y+dy<=block_list[i].y+70 
+              && char_x+dx>=block_list[i].x-70 
+              && char_x+dx<=block_list[i].x+70;
     if(check){
       block_list[i].img=ObsBreakImg;
       block_list[i].isblocken=true;
