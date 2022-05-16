@@ -17,15 +17,12 @@ let context2;
 let miniImg=new Image();
 miniImg.src="../img/char_score1.png";
 let minibackImg=new Image();
-minibackImg.src="../img/school_map.png";
+minibackImg.src="../img/space/map.png";
 let scorebackImg=new Image();
 scorebackImg.src="../img/score_back.png";
 let clearImg=new Image();
-clearImg.src="../img/박.png";
-let mchar_y=550;
-let mchar_x=300;
-let mx=0;
-let my=0;
+clearImg.src="../img/bak.png";
+
 let jumpguageImg=new Image();
 jumpguageImg.src="../img/게이지.png";
 let scoreText;
@@ -35,16 +32,16 @@ let context3=document.getElementById("scoreCanvas").getContext("2d");
 
 let context;
 let backgroundImg=new Image();
-backgroundImg.src="../img/school_map.png"; //배경
+backgroundImg.src="../img/space/map.png"; //배경
 let charImg=new Image();
 let ObstacleImg=new Image();
-charImg.src="../img/char_ready.png";
-ObstacleImg.src="../img/학교.png";
+charImg.src="../img/school/char_ready.png";
+ObstacleImg.src="../img/school/obs.png"; //장애물
 let ObsBreakImg=new Image();
-ObsBreakImg.src="../img/학교격파.png";
+ObsBreakImg.src="../img/school/obsB.png";
 let char_x=340; //캐릭터 x 좌표
 let char_y=470; //캐릭터 y 좌표
-let Obs_x=0; //장애물 x 좌표
+let Obs_x=0; //장애물 x 좌표                                                                                
 let Obs_y=0; //장애물 y 좌표
 let dx=0;
 let dy=0;
@@ -52,11 +49,20 @@ let Spacekey=-1; //스페이스 종류 판단
 let keycode;
 let break_cnt=0; //격파갯수
 
-let bg_x=0;
-let bg_y=-2680;
+//배경 위치 상수
+const c_bg_x=0;
+const c_bg_y=-5760;
+//배경 시작 위치
+let bg_x=c_bg_x;
+let bg_y=c_bg_y;
 
+//점수
 let score=0;
 
+
+
+//true 왼쪽 false 오른쪽
+let direction=true;
 
 let block_list=[];
 
@@ -68,14 +74,14 @@ let bloke_chek=false;
 
 let bak={
   x:280,
-  y:-2400,
+  y:c_bg_y+300,
   isblocken: false,
   img: clearImg,
 };
 
 let trampoline_list=[];
 let trampolineImg=new Image();
-trampolineImg.src="../img/트램펄린.png";
+trampolineImg.src="../img/trampoline.png";
 let trampoline_check=false;
 
 let gameover =false;
@@ -92,9 +98,10 @@ function gameStart(){
   gameCanvas.height=600;
 
 
-  for(let i=0 ; i<15 ; i++)createObstacle();
+  for(let i=0 ; i<35 ; i++) createObstacle();
   let a=0;
   run=setTimeout(function runGame(){
+    //게임 오버 클리어 체크
     if(gameover){
       a++;
       if(a>100){
@@ -120,12 +127,11 @@ function gameStart(){
     }
     move();
     draw();
-    a_play.play();
-    minimove(); //미니맵 움직임
+   // a_play.play();
     minidraw();
     scoredraw(); //점수판
 
-    bg_check = Spacekey==2 && bg_y<0 && bg_y >=-2680;
+    bg_check = Spacekey==2 && bg_y<0 && bg_y >=c_bg_y;
     if(bg_check){
       drawObs();
       time++;
@@ -138,12 +144,13 @@ function gameStart(){
     }
     else if(Spacekey==2 && bg_y<0){
       dy=5;
-      charImg.src="../img/char_ready.png";
-      bg_y=-2680;
+      
+      charImg.src="../img/school/char_ready.png";
+      bg_y=c_bg_y;
       if(!gameover&&!bak.isblocken){
-        //popup_over();
-        a_over.play();
         gameover=true;
+        a_over.play();
+      
       } 
     }
     run=setTimeout(runGame,1);
@@ -165,18 +172,18 @@ function move() {
 }
 
 function draw() {
-  context.clearRect(0,0,800,600);
-  context.drawImage(backgroundImg, 0,bg_y,800,3282); // 배경 그리기
+  //context.clearRect(0,0,1000,600);
+  context.drawImage(backgroundImg, 0,bg_y,800,6360); // 배경 그리기
   if(bg_check){
     
     if(time<jump){ bg_y+=5;}
     else bg_y-=5;
   }
-  if(bloke_chek){my=-1; bg_y+=15;}
-  if(trampoline_check) {my=-3.5; bg_y+=20;}
+  if(bloke_chek){ bg_y+=15;}
+  if(trampoline_check) { bg_y+=20;}
   if(bg_y>0) bg_y=-5;
  
-  context.drawImage(charImg, char_x,char_y, 100,100); // 캐릭터 그리기
+  context.drawImage(charImg, char_x,char_y, 200,150); // 캐릭터 그리기
  
  if(Spacekey==0){
   jumpguage();
@@ -185,8 +192,8 @@ function draw() {
 }
 
 function drawObs(){
-  for(let i=0 ; i<trampoline_list.length ; i++){ //장애물 그리기
-    context.drawImage(trampoline_list[i].img, trampoline_list[i].x, trampoline_list[i].y, 100,100);
+  for(let i=0 ; i<trampoline_list.length ; i++){ //트램펄린 그리기
+    context.drawImage(trampoline_list[i].img, trampoline_list[i].x, trampoline_list[i].y, 120,120);
     if(time<jump) trampoline_list[i].y+=5;
     else trampoline_list[i].y-=5;
     if(bloke_chek)trampoline_list[i].y+=13;
@@ -200,17 +207,17 @@ function drawObs(){
     if(bloke_chek)block_list[i].y+=13;
     if(trampoline_check) block_list[i].y+=20;
     if(block_list[i].isblocken) block_list.splice(i,1);//setTimeout(() => block_list.splice(i,1) , 100); //격파할때 이미지 바꾸는건 나중에 수정하기 
-  }
-  if(time<jump) bak.y+=5;
+  } 
+  if(time<jump) bak.y+=5; //빅 그리기
   else bak.y-=5;
   if(bloke_chek)bak.y+=13;
   if(trampoline_check) bak.y+=20;
-  context.drawImage(bak.img, bak.x, bak.y, 200,200);
+  context.drawImage(bak.img, bak.x, bak.y, 300,300);
 }
 
 
 
-let start_my=0;
+
 //점프할 때 , 격파할 때
 function Space(){
   //처음 점프 할 때
@@ -224,17 +231,25 @@ function Space(){
       else if(Spacekey==1){
         setInterval(()=>dy=-5,200);
         Spacekey=2;
-        charImg.src="../img/char_flying.png"; 
+        
+        charImg.src="../img/school/char_flying.png"; 
       
       }  
       //격파 할 때
       else {
-        my=start_my;
-        setInterval(() => my=0.6,100 );
+   
+
         a_kick.play(); 
-        charImg.src="../img/char_kick.png"; 
+
+        //좌우 구분
+        if(direction=true){
+          charImg.src="../img/school/char_lkick.png"; 
+        }
+        else {
+          charImg.src="../img/school/char_rkick.png"; 
+        } 
         chkBreak();
-        setTimeout(() => charImg.src="../img/char_flying.png", 200);
+        setTimeout(() => charImg.src="../img/school/char_flying.png", 200);
      
       }
    
@@ -301,14 +316,16 @@ function chkBreak(){
 }
   for (let i=0 ; i<block_list.length ; i++) {
       //격파성공하면
-    let check=char_y+dy>=block_list[i].y-60 
-              && char_y+dy<=block_list[i].y+60 
-              && char_x+dx>=block_list[i].x-60 
-              && char_x+dx<=block_list[i].x+60;
+    let check=char_y+dy>=block_list[i].y-70 
+              && char_y+dy<=block_list[i].y+70 
+              && char_x+dx>=block_list[i].x-70 
+              && char_x+dx<=block_list[i].x+70;
     if(check){
       block_list[i].img=ObsBreakImg;
       block_list[i].isblocken=true;
-      charImg.src="../img/char_breaking.png"  
+
+      
+      charImg.src="../img/school/char_rkick.png"  
       a_break.play(); 
       score+=10;
 
@@ -322,9 +339,10 @@ function chkBreak(){
               && char_x+dx>=bak.x-100 
               && char_x+dx<=bak.x+100;
       if(clear_check){
-          clearImg.src="../img/박격파.png";
+          clearImg.src="../img/bakB.png";
+    
           a_clear.play();
-        
+
           //popup1=true; 
           bak.isblocken=true;
           gameclear=true;
@@ -340,8 +358,8 @@ function chkBreak(){
 function keydown() {
   keycode=event.keyCode;
   switch(keycode){
-    case 37:dx=-3; mx=-2; break; //좌
-    case 39:dx=3;  mx=2; break; //우
+    case 37:dx=-3;  direction=true;  break; //좌
+    case 39:dx=3;  direction=false;  break; //우
     case 32: Space(); break; //스페이스
     
   }
@@ -351,13 +369,14 @@ function keydown() {
 function keyup() {
   keycode=event.keyCode;
   switch(keycode){
-    case 37:dx=0;  mx=0; break; //좌
-    case 39:dx=0;  mx=0; break; //우
+    case 37:dx=0;   break; //좌
+    case 39:dx=0;  break; //우
     case 32:dy=0; break; //스페이스
   }
 }
 
-    //추가할 것
+
+//미니맵
     function minimapStart(){
       gaugeCanvas = document.getElementById("gaugeCanvas");
       context2 = gaugeCanvas.getContext("2d");
@@ -367,22 +386,9 @@ function keyup() {
     }
     function minidraw() {
       context2.drawImage(minibackImg,0,0,800,600);
-      context2.drawImage(miniImg,mchar_x,mchar_y,200,30); // 사용자 위치 그리기
-      // 사용자 위치 그리기
     }
     
-    function minimove() {
-    
-      if( mchar_x+mx>0 && mchar_x+mx<550){
-        mchar_x+=mx;
-      }
-    
-    
-    
-      if( mchar_y+my>0 && mchar_y+my<550){
-        mchar_y+=my;
-      }
-    }
+  
     
     
     
@@ -418,13 +424,17 @@ function keyup() {
     
     //게임클리어
     function popup_clear(){
+
       let url="gameclear.html";
       let option="width=1000, height=520, top=100 left=300"
       window.open(url, "", option);
     }
     
 
-    //점프게이지
+
+
+
+//점프게이지
 let jump_x=250, jump_y=20; let jump=0;
 let z=0;
 function jumpguage(){
@@ -449,13 +459,13 @@ if(keycode==13){
 
   //구간에 따라 y좌표 주기
   if(jump_x>=250 && jump_x<=300 || jump_x>=450 && jump_x<=500){
-    start_my=-3; jump=100;
+  jump=100;
   } 
   else if(jump_x>300 && jump_x<350 || jump_x>400 && jump_x<450) {
-    start_my=-4;jump=150;
+    jump=150;
   }
   else if(jump_x>=350 && jump_x<=400){
-    start_my=-5; jump=200;
+    jump=200;
   }
 
   setTimeout(() => {
@@ -464,4 +474,3 @@ if(keycode==13){
 }
 }
 
-//점프게이지 좌표, 게임오버, 현재위치 좌표

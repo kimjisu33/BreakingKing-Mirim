@@ -1,3 +1,4 @@
+
 body{
     background-image: url('../img/info_background.png');
     background-repeat: no-repeat;
@@ -6,22 +7,24 @@ body{
     }
 
 #logo{
-margin-top: 30px;
-margin-left: 550px;
+margin-top: 100px;
+margin-left: 750px;
 width: 500px;
 height: 150px;
     }
 
 .map1{
-margin-left: 200px;
+margin-top: 30px;
+margin-left: 300px;
     }
 
 .map2{
-margin-top: 20px;
-margin-left: 400px;
+margin-top: 50px;
+margin-left: 550px;
     }
 
 .map{
+width: 300px;
 box-shadow: 20px 20px black;
 border-radius: 10px;
 margin-left: 100px;

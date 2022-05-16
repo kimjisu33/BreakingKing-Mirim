@@ -8,19 +8,19 @@ let well=document.getElementById("well");
 
 //우주
 space.addEventListener("mouseover",()=>{
-    space.src="../img/map_space_over.png";
+    space.src="../img/space/over.png";
 });
 space.addEventListener("mouseout",()=>{
-    space.src="../img/map_space.png";
+    space.src="../img/space/choice.png";
 });
 
 
 //바다
 sea.addEventListener("mouseover",()=>{
-    sea.src="../img/map_sea_over.png";
+    sea.src="../img/sea/over.png";
 });
 sea.addEventListener("mouseout",()=>{
-    sea.src="../img/map_sea.png";
+    sea.src="../img/sea/choice.png";
 });
 
 
@@ -35,10 +35,10 @@ underground.addEventListener("mouseout",()=>{
 
 //학교
 school.addEventListener("mouseover",()=>{
-    school.src="../img/map_school_over.png";
+    school.src="../img/school/over.png";
 });
 school.addEventListener("mouseout",()=>{
-    school.src="../img/map_school.png";
+    school.src="../img/school/choice.png";
 });
 
 

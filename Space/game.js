@@ -17,11 +17,11 @@ let context2;
 let miniImg=new Image();
 miniImg.src="../img/char_score1.png";
 let minibackImg=new Image();
-minibackImg.src="../img/spacetest.png";
+minibackImg.src="../img/space/map.png";
 let scorebackImg=new Image();
 scorebackImg.src="../img/score_back.png";
 let clearImg=new Image();
-clearImg.src="../img/박.png";
+clearImg.src="../img/bak.png";
 
 let jumpguageImg=new Image();
 jumpguageImg.src="../img/게이지.png";
@@ -32,16 +32,16 @@ let context3=document.getElementById("scoreCanvas").getContext("2d");
 
 let context;
 let backgroundImg=new Image();
-backgroundImg.src="../img/spacetest.png"; //배경
+backgroundImg.src="../img/space/map.png"; //배경
 let charImg=new Image();
 let ObstacleImg=new Image();
 charImg.src="../img/space/char_ready.png";
-ObstacleImg.src="../img/obstacle1.png";
+ObstacleImg.src="../img/space/obs.png"; //장애물
 let ObsBreakImg=new Image();
-ObsBreakImg.src="../img/obstacle1_break.png";
+ObsBreakImg.src="../img/space/obsB.png";
 let char_x=340; //캐릭터 x 좌표
 let char_y=470; //캐릭터 y 좌표
-let Obs_x=0; //장애물 x 좌표
+let Obs_x=0; //장애물 x 좌표                                                                                
 let Obs_y=0; //장애물 y 좌표
 let dx=0;
 let dy=0;
@@ -81,7 +81,7 @@ let bak={
 
 let trampoline_list=[];
 let trampolineImg=new Image();
-trampolineImg.src="../img/트램펄린.png";
+trampolineImg.src="../img/trampoline.png";
 let trampoline_check=false;
 
 let gameover =false;
@@ -127,7 +127,7 @@ function gameStart(){
     }
     move();
     draw();
-    a_play.play();
+   // a_play.play();
     minidraw();
     scoredraw(); //점수판
 
@@ -148,9 +148,9 @@ function gameStart(){
       charImg.src="../img/space/char_ready.png";
       bg_y=c_bg_y;
       if(!gameover&&!bak.isblocken){
-        //popup_over();
-        a_over.play();
         gameover=true;
+        a_over.play();
+      
       } 
     }
     run=setTimeout(runGame,1);
@@ -172,7 +172,7 @@ function move() {
 }
 
 function draw() {
-  context.clearRect(0,0,800,600);
+  //context.clearRect(0,0,1000,600);
   context.drawImage(backgroundImg, 0,bg_y,800,6360); // 배경 그리기
   if(bg_check){
     
@@ -193,7 +193,7 @@ function draw() {
 
 function drawObs(){
   for(let i=0 ; i<trampoline_list.length ; i++){ //트램펄린 그리기
-    context.drawImage(trampoline_list[i].img, trampoline_list[i].x, trampoline_list[i].y, 100,100);
+    context.drawImage(trampoline_list[i].img, trampoline_list[i].x, trampoline_list[i].y, 120,120);
     if(time<jump) trampoline_list[i].y+=5;
     else trampoline_list[i].y-=5;
     if(bloke_chek)trampoline_list[i].y+=13;
@@ -207,12 +207,12 @@ function drawObs(){
     if(bloke_chek)block_list[i].y+=13;
     if(trampoline_check) block_list[i].y+=20;
     if(block_list[i].isblocken) block_list.splice(i,1);//setTimeout(() => block_list.splice(i,1) , 100); //격파할때 이미지 바꾸는건 나중에 수정하기 
-  }
-  if(time<jump) bak.y+=5;
+  } 
+  if(time<jump) bak.y+=5; //빅 그리기
   else bak.y-=5;
   if(bloke_chek)bak.y+=13;
   if(trampoline_check) bak.y+=20;
-  context.drawImage(bak.img, bak.x, bak.y, 200,200);
+  context.drawImage(bak.img, bak.x, bak.y, 300,300);
 }
 
 
@@ -339,8 +339,10 @@ function chkBreak(){
               && char_x+dx>=bak.x-100 
               && char_x+dx<=bak.x+100;
       if(clear_check){
-          clearImg.src="../img/박격파.png";
+          clearImg.src="../img/bakB.png";
+    
           a_clear.play();
+
           //popup1=true; 
           bak.isblocken=true;
           gameclear=true;
@@ -422,6 +424,7 @@ function keyup() {
     
     //게임클리어
     function popup_clear(){
+
       let url="gameclear.html";
       let option="width=1000, height=520, top=100 left=300"
       window.open(url, "", option);
