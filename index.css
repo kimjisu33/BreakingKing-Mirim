@@ -46,7 +46,7 @@ p{
 }
 
 body{
-background-image: url('../img/main_background.png');
+background-image: url('./img/main_background.png');
 background-repeat: no-repeat;
 background-size: cover;
 
