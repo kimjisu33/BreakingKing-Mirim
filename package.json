@@ -1,0 +1,26 @@
+{
+  "name": "breakingking-mirim",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kimjisu33/BreakingKing-Mirim.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kimjisu33/BreakingKing-Mirim/issues"
+  },
+  "homepage": "https://github.com/kimjisu33/BreakingKing-Mirim#readme",
+  "dependencies": {
+    "body-parser": "^1.20.0",
+    "errorhandler": "^1.5.1",
+    "express": "^4.18.1",
+    "mysql": "^2.18.1",
+    "serve-static": "^1.15.0"
+  }
+}
