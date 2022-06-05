@@ -26,10 +26,10 @@ sea.addEventListener("mouseout",()=>{
 
 //땅 속
 underground.addEventListener("mouseover",()=>{
-    underground.src="../img/map_underground_over.png";
+    underground.src="../img/underground/over.png";
 });
 underground.addEventListener("mouseout",()=>{
-    underground.src="../img/map_underground.png";
+    underground.src="../img/underground/choice.png";
 });
 
 
@@ -44,8 +44,8 @@ school.addEventListener("mouseout",()=>{
 
 //우물
 well.addEventListener("mouseover",()=>{
-    well.src="../img/map_well_over.png";
+    well.src="../img/well/over.png";
 });
 well.addEventListener("mouseout",()=>{
-    well.src="../img/map_well.png";
+    well.src="../img/well/choice.png";
 });

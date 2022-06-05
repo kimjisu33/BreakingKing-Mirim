@@ -224,11 +224,14 @@ function Space(){
 
       if(Spacekey==-1){
         setTimeout(() => {
+          document.getElementById('alert1').style.display = 'none';
+          document.getElementById('alert2').style.display = 'block';
           Spacekey=0;   
         }, 500);
      
       }
       else if(Spacekey==1){
+        document.getElementById('alert2').style.display = 'none';
         setInterval(()=>dy=-5,200);
         Spacekey=2;
         
@@ -408,8 +411,8 @@ function keyup() {
     
     function scoredraw() {
       context3.drawImage(scorebackImg,0,0,300,300);
-      context3.drawImage(miniImg,125,240,50,50);
-      context3.fillText(score,150, 200);
+
+      context3.fillText(score,160, 220);
       
     }
     

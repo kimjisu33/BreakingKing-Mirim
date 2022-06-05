@@ -5,12 +5,19 @@ body{
     background-size: cover;
     
     }
-
+    #mlogo{
+        float: left;
+        margin-top: 20px;
+        width: 166px;
+        height: 100px;
+        margin-left: 50px;
+    
+    }
 #logo{
 margin-top: 100px;
-margin-left: 750px;
-width: 500px;
-height: 150px;
+margin-left: 520px;
+width: 450px;
+height: 200px;
     }
 
 .map1{

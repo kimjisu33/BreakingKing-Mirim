@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>격파왕 미림</title>
+        <title>우주</title>
         <meta charset="utf-8">
         <script src="game.js" defer></script>
         <script src="guage.js" defer></script>
@@ -10,11 +10,20 @@
         </script>
         <link rel="stylesheet" href="game.css">
     </head>
+
+
     <body onload="gameStart()"  onkeydown="keydown()" onkeyup="keyup()">
-        <a href="../index.html">
-            <img src="../img/logo.png" id="logo">
-        </a>
+        <div>
+            <a href="../index.html">
+                <img src="../img/logo.png" id="logo">
+            </a>
+            <div class="alert-box1" id="alert1">방향키로 위치를 정하고 스페이스를 눌러주세요</div>
+            <div class="alert-box2" id="alert2">엔터키를 눌러 게이지를 정하고 스페이스를 누르며 격파를 시작하세요!</div>
+           
+        </div>
         <br>
+ 
+ 
         <p id="canvas">
             <canvas id="scoreCanvas" ></canvas>
             <canvas id="gaugeCanvas" ></canvas>

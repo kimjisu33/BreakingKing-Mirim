@@ -1,4 +1,40 @@
 
+
+.alert-box1 {
+    text-align: center;
+      font-size: 25px;
+      font-family: 'NeoDunggeunmo';
+      margin-top: 102px;
+      height: 30px;
+      margin-right: 190px;
+      float: right;
+      width: 1000px;
+      background-color: rgb(255, 230, 0);
+      border: none;
+      padding: 20px;
+  
+      color: black;
+      border-radius: 5px;
+      display: block ;
+    } 
+  
+    .alert-box2 {
+      text-align: center;
+      font-size: 25px;
+      font-family: 'NeoDunggeunmo';
+      margin-top: 102px;
+      height: 30px;
+      margin-right: 190px;
+      float: right;
+      width: 1000px;
+      background-color: rgb(255, 230, 0);
+      border: none;
+      padding: 20px;
+  
+      color: black;
+      border-radius: 5px;
+      display: none ;
+      } 
 /* 로고크기 조절 */
 #logo{
 
@@ -13,16 +49,15 @@
 
 #scoreCanvas{
    float: left;
-    margin-top: 100px;
+    margin-top: 200px;
     margin-left: 80px;
     width: 300px;
     height: 300px;
-    background-color: white;
-    border: 1px solid black;
+
     background-image: url('../img/score_back.png');
     background-repeat: no-repeat;
     background-size: cover;
-    border-radius: 20px 20px 20px 20px / 20px 20px 20px 20px;
+
 
 }
 #gameCanvas{

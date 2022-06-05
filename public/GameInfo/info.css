@@ -22,11 +22,12 @@ a { text-decoration:none }
 
 #boxBackground{
     background-image:url('../img/게임설명.png'); ;
-    margin-left: 480px;
+    margin-top: 50px;
+    margin-left: 200px;
     background-repeat: no-repeat;
     background-size: cover;
-    width: 1000px;
-    height: 500px;
+    width: 1500px;
+    height: 700px;
 
   
 }
