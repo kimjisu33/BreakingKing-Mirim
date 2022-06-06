@@ -11,8 +11,9 @@
 
 
 #info_logo{
-margin-top: 100px;
+    margin-top: 100px;
     margin-left: 500px;
+    margin-bottom: 50px;
     width: 500px;
     height: 150px;
 }
@@ -20,16 +21,14 @@ margin-top: 100px;
 /* a태그 하이퍼링크 밑줄 없애기 */
 a { text-decoration:none }
 
-#boxBackground{
-    background-image:url('../img/게임설명.png'); ;
-    margin-top: 50px;
-    margin-left: 200px;
+.rankBox{
+    background-color: white;
+    margin-bottom: 50px;
+    margin-left: 460px;
     background-repeat: no-repeat;
     background-size: cover;
-    width: 1500px;
-    height: 700px;
-
-  
+    width: 1000px;
+    height: 100px;
 }
 
 
