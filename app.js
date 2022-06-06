@@ -11,6 +11,7 @@ const app=express();
 
 const mysql=require('mysql');
 const dbconfig=require('./config/database.js');
+const { throws } = require('assert');
 const connection=mysql.createConnection(dbconfig);
 
 app.set('port', process.env.PORT || 3000);
@@ -22,17 +23,28 @@ app.use(bodyParser.json())
 app.use(static(path.join(__dirname, 'public')));
 
 
-let test;
-app.get('/mysql', (req, res)=>{
+let select_result;
+app.get('/mysql_select', (req, res)=>{
   connection.query('select * from score order by score desc',(err,rows)=>{
     if(err) throw err;
     
     //res.send(rows); 
     
-    test=rows;
-    console.log(test[0]);
+    select_result=rows;
+    console.log(select_result[0]);
   });
   res.redirect('/rank');
+});
+
+app.get('/mysql_insert',(req,res)=>{
+  connection.query('insert into score values (?,?)',['insert test',123], (err,results,fields)=>{
+    if(err) throw err;
+
+    let test= results;
+    console.log(test);
+
+    res.write('<h1>'+test+'</h1>')
+  })
 });
 
 app.get('/rank',(req, res)=>{
@@ -43,8 +55,8 @@ app.get('/rank',(req, res)=>{
       res.writeHead(200,{'Context-Type':'text/html'});
       res.write(data);
       
-      test.forEach(element => {
-        res.write(`<table style="background-color: aqua; margin-left: 460px;"><tr style="background-color: red; height: 100px;"><td style="width: 300px;">${element.name}</td><td style="width: 700px;">${element.score}</td></tr></table>`);
+      select_result.forEach(element => {
+        res.write(`<table style="background-color: red; margin-left: 460px;"><tr style="background-color: gray; height: 100px;"><td style="width: 300px;">${element.name}</td><td style="width: 700px;">${element.score}</td></tr></table>`);
       });
       
       res.end();
