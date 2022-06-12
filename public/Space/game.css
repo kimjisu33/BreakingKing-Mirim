@@ -101,3 +101,7 @@ body{
     font-size: 45px;
     
 }
+
+#temp_input{
+    visibility: hidden;
+}

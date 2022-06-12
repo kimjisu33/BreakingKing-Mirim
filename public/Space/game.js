@@ -91,6 +91,11 @@ overImg.src="../img/gameover_back.png";
 let clearImg_bg=new Image();
 clearImg_bg.src="../img/gameclear_back.png";
 
+let temp_input=document.getElementById('temp_input');
+function popup_over(){
+  temp_input.value=score;
+  window.open('gameover.html',"childForm", "width=570, height=350, resizable = no, scrollbars = no");
+}
 function gameStart(){
   gameCanvas = document.getElementById("gameCanvas");
   context = gameCanvas.getContext("2d");
@@ -111,6 +116,7 @@ function gameStart(){
         context.font = "bold 50px Gulim";
         context.fillStyle="white";
         context.fillText(score, 360, 410);
+        popup_over();
         return ;
       }
     }else if(gameclear){
@@ -156,8 +162,8 @@ function gameStart(){
     run=setTimeout(runGame,1);
   },1);
   
-  context.clearRect(0,0,800,600);
-  
+  //context.clearRect(0,0,800,600);
+
 }
 
 
@@ -416,27 +422,6 @@ function keyup() {
       
     }
     
-
-    //게임오버
-    function popup_over(){
-      let url="gameover.html";
-      let option="width=1000, height=520, top=100 left=300"
-      document.getElementById("score").value=score;
-      window.open(url, "", option);
-    }
-    
-    //게임클리어
-    function popup_clear(){
-
-      let url="gameclear.html";
-      let option="width=1000, height=520, top=100 left=300"
-      window.open(url, "", option);
-    }
-    
-
-
-
-
 //점프게이지
 let jump_x=250, jump_y=20; let jump=0;
 let z=0;
@@ -476,4 +461,3 @@ if(keycode==13){
   }, 300); 
 }
 }
-

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+   
+</head>
+<body>
+    <form action="/mysql_insert" method="post">
+        점수
+         : <input type="text" name="score" id="score" value="" readonly>
+        이름 : <input type="text" name="name" id="name">
+        <input type="submit">
+        <input type="button" onclick="reload()" value="랭킹 넣지 않고 다시 시작">
+    </form>
+</body>
+<script>
+    function reload(){
+        window.opener.location.reload(true);
+        window.close();
+    }
+    let input=document.getElementById("score");
+    input.value=opener.document.getElementById("temp_input").value;
+    
+</script>
+</html>

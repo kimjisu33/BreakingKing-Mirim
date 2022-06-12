@@ -14,6 +14,7 @@ const dbconfig=require('./config/database.js');
 const { throws } = require('assert');
 const connection=mysql.createConnection(dbconfig);
 
+
 app.set('port', process.env.PORT || 3000);
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -25,7 +26,7 @@ app.use(static(path.join(__dirname, 'public')));
 
 let select_result;
 app.get('/mysql_select', (req, res)=>{
-  connection.query('select * from score order by score desc',(err,rows)=>{
+  connection.query('select * from score order by score desc;',(err,rows)=>{
     if(err) throw err;
     
     //res.send(rows); 
@@ -36,15 +37,14 @@ app.get('/mysql_select', (req, res)=>{
   res.redirect('/rank');
 });
 
-app.get('/mysql_insert',(req,res)=>{
-  connection.query('insert into score values (?,?)',['insert test',123], (err,results,fields)=>{
+app.post('/mysql_insert',(req,res)=>{
+  let name=req.body.name;
+  let score=Number(req.body.score);
+  connection.query('insert into score values (?,?);',[name,score], (err,results,fields)=>{
     if(err) throw err;
+    res.write('<h1>'+test+'</h1>');
+  });
 
-    let test= results;
-    console.log(test);
-
-    res.write('<h1>'+test+'</h1>')
-  })
 });
 
 app.get('/rank',(req, res)=>{
