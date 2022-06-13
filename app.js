@@ -32,7 +32,7 @@ app.get('/mysql_select', (req, res)=>{
     //res.send(rows); 
     
     select_result=rows;
-    console.log(select_result[0]);
+    //console.log(select_result[0]);
   });
   res.redirect('/rank');
 });
@@ -42,7 +42,8 @@ app.post('/mysql_insert',(req,res)=>{
   let score=Number(req.body.score);
   connection.query('insert into score values (?,?);',[name,score], (err,results,fields)=>{
     if(err) throw err;
-    res.write('<h1>'+test+'</h1>');
+    res.write('<h1>'+name+' '+score+'</h1>');
+    res.end();
   });
 
 });
@@ -55,9 +56,18 @@ app.get('/rank',(req, res)=>{
       res.writeHead(200,{'Context-Type':'text/html'});
       res.write(data);
       
+      let rank=1;
+      res.write('<table style="margin-left: 460px;">');
       select_result.forEach(element => {
-        res.write(`<table style="background-color: red; margin-left: 460px;"><tr style="background-color: gray; height: 100px;"><td style="width: 300px;">${element.name}</td><td style="width: 700px;">${element.score}</td></tr></table>`);
+        res.write(`
+            <tr style="height: 100px; font-size: 50px;">
+              <td id="rank" style="width: 120px; padding-left:20px;">${rank++}</td>
+              <td id="score" style="width: 200px; padding-left:100px;">${element.name}</td>
+              <td style="width: 300px; padding-left:200px;">${element.score}</td>
+            </tr>
+        `);
       });
+      res.write('</table>');
       
       res.end();
     }
