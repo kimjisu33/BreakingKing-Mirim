@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>랭킹 순위 성공</title>    
+    <link rel="stylesheet" href="popup.css">
+    <script type="text/javascript">
+    
+        function reload(){
+            window.opener.location.reload(true);
+            window.close();
+        }
+
+        function rank(){
+            window.opener.location.replace("/mysql_select");
+            window.close();
+        }
+    </script>
+</head>
+<body>
+    성공적으로 순위에 삽입되었습니다!
+    <br>
+    <input type="button" value="재시작" onclick="reload()" id="replay">
+    <input type="button" value="순위"  onclick="rank()" id="rank">  
+</body>
+</html>

@@ -94,7 +94,7 @@ clearImg_bg.src="../img/gameclear_back.png";
 let temp_input=document.getElementById('temp_input');
 function popup_over(){
   temp_input.value=score;
-  window.open('gameover.html',"childForm", "width=570, height=350, resizable = no, scrollbars = no");
+  window.open('../popup/gameover.html',"childForm", "width=570, height=350, resizable = no, scrollbars = no");
 }
 function gameStart(){
   gameCanvas = document.getElementById("gameCanvas");
