@@ -15,7 +15,7 @@ const { throws } = require('assert');
 const connection=mysql.createConnection(dbconfig);
 
 
-app.set('port', process.env.PORT || 3000);
+app.set('port', process.env.PORT || 3006);
 
 app.use(bodyParser.urlencoded({ extended: false }));
 

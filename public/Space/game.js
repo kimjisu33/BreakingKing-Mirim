@@ -96,6 +96,10 @@ function popup_over(){
   temp_input.value=score;
   window.open('../popup/gameover.html',"childForm", "width=570, height=350, resizable = no, scrollbars = no");
 }
+function popup_clear(){
+  temp_input.value=score;
+  window.open('../popup/gameover.html',"childForm", "width=570, height=350, resizable = no, scrollbars = no");
+}
 function gameStart(){
   gameCanvas = document.getElementById("gameCanvas");
   context = gameCanvas.getContext("2d");
@@ -128,6 +132,7 @@ function gameStart(){
         context.font = "bold 50px Gulim";
         context.fillStyle="white";
         context.fillText(score, 360, 410);
+        popup_clear();
         return ;
       }
     }
@@ -185,7 +190,7 @@ function draw() {
     if(time<jump){ bg_y+=5;}
     else bg_y-=5;
   }
-  if(bloke_chek){ bg_y+=15;}
+  if(bloke_chek){ bg_y+=13;}
   if(trampoline_check) { bg_y+=20;}
   if(bg_y>0) bg_y=-5;
  
@@ -214,7 +219,7 @@ function drawObs(){
     if(trampoline_check) block_list[i].y+=20;
     if(block_list[i].isblocken) block_list.splice(i,1);//setTimeout(() => block_list.splice(i,1) , 100); //격파할때 이미지 바꾸는건 나중에 수정하기 
   } 
-  if(time<jump) bak.y+=5; //빅 그리기
+  if(time<jump) bak.y+=5; //박 그리기
   else bak.y-=5;
   if(bloke_chek)bak.y+=13;
   if(trampoline_check) bak.y+=20;
@@ -393,8 +398,9 @@ function keyup() {
       gaugeCanvas.height=600;
     
     }
+
     function minidraw() {
-      context2.drawImage(minibackImg,0,0,800,600);
+      context2.drawImage(minibackImg,0,0,800,600); //★★★★★★★★★★★★미니맵 수정
     }
     
   
