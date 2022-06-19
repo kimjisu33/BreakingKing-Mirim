@@ -9,30 +9,12 @@ const bodyParser = require('body-parser')
 
 const app=express();
 
-const mysql=require('mysql');
-const dbconfig=require('./config/database.js');
-const { throws } = require('assert');
-const connection=mysql.createConnection(dbconfig);
-
+const mysql     = require('mysql');
+const db 	= require('./config/database.js');
 
 app.set('port', process.env.PORT || 3006);
 
-app.use(bodyParser.urlencoded({ extended: false }));
-
-app.use(bodyParser.json())
-
 app.use(static(path.join(__dirname, 'public')));
-
-
-let select_result;
-app.get('/mysql_select', (req, res)=>{
-  connection.query('select * from score order by score desc;',(err,rows)=>{
-    if(err) throw err;
-    select_result=rows;
-    //console.log(select_result[0]);
-  });
-  res.redirect('/rank');
-});
 
 app.post('/mysql_insert',(req,res)=>{
   let name=req.body.name;
@@ -45,7 +27,14 @@ app.post('/mysql_insert',(req,res)=>{
 
 });
 
+
+let select_result={};
 app.get('/rank',(req, res)=>{
+  db.query('select * from score order by score desc;',(err,rows)=>{
+    if(err) throw err;
+    select_result=rows;
+  });
+
   fs.readFile(__dirname+'/public/rank/rank.html',function(err,data){
     if(err){
       console.log(err);
@@ -54,16 +43,18 @@ app.get('/rank',(req, res)=>{
       res.write(data);
       
       let rank=1;
-      res.write('<table style="margin-left: 460px;">');
-      select_result.forEach(element => {
-        res.write(`
-            <tr style="height: 100px; font-size: 50px;">
-              <td id="rank" style="width: 120px; padding-left:20px;">${rank++}</td>
-              <td id="score" style="width: 200px; padding-left:100px;">${element.name}</td>
-              <td style="width: 300px; padding-left:200px;">${element.score}</td>
-            </tr>
+      res.write('<table style="margin-left: 530px; margin-bottom:100px;">');
+      for(let i of select_result){
+        res.write(`<tr style="height: 100px; font-size: 50px;">`);
+        if(rank<=3) res.write(`<td style="width: 150px;"><img src="../img/${rank++}.png" width="100px" height="100px"></td>`);
+        else res.write(`<td style="width: 130px;">${rank++}</td>`);
+        res.write(`   
+            <td style="width: 300px;">${i.name}</td>
+            <td style="width: 400px;">${i.score}</td>
+          </tr>
         `);
-      });
+        if(rank>10) break;
+      };
       res.write('</table>');
       
       res.end();
