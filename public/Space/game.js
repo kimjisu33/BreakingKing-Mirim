@@ -48,6 +48,7 @@ let dy=0;
 let Spacekey=-1; //스페이스 종류 판단
 let keycode;
 let break_cnt=0; //격파갯수
+let mini_x=320, mini_y=580; //미니맵 캐릭터 좌표
 
 //배경 위치 상수
 const c_bg_x=0;
@@ -173,8 +174,9 @@ function gameStart(){
 
 
 function move() {
-  if(char_x+dx>0 && char_x+dx<700 ){
+  if(char_x+dx>-50 && char_x+dx<650 ){
     char_x+=dx; //캐릭터 좌우 캔버스 안나가게 하기
+    mini_x+=dx;
   }
 
   if( char_y+dy>200 && char_y+dy<470){ //위아래 제한
@@ -185,13 +187,12 @@ function move() {
 function draw() {
   //context.clearRect(0,0,1000,600);
   context.drawImage(backgroundImg, 0,bg_y,800,6360); // 배경 그리기
-  if(bg_check){
-    
-    if(time<jump){ bg_y+=5;}
-    else bg_y-=5;
+  if(bg_check){  
+    if(time<jump){ bg_y+=5; mini_y-=0.5;}
+    else {bg_y-=5; mini_y+=0.5;}
   }
-  if(bloke_chek){ bg_y+=13;}
-  if(trampoline_check) { bg_y+=20;}
+  if(bloke_chek ){ bg_y+=13; mini_y-=1.3; }
+  if(trampoline_check) { bg_y+=20; mini_y-=2; }
   if(bg_y>0) bg_y=-5;
  
   context.drawImage(charImg, char_x,char_y, 200,150); // 캐릭터 그리기
@@ -401,6 +402,7 @@ function keyup() {
 
     function minidraw() {
       context2.drawImage(minibackImg,0,0,800,600); //★★★★★★★★★★★★미니맵 수정
+      context2.drawImage(miniImg,mini_x,mini_y,200 ,20);
     }
     
   
