@@ -93,11 +93,8 @@ let clearImg_bg=new Image();
 clearImg_bg.src="../img/gameclear_back.png";
 
 let temp_input=document.getElementById('temp_input');
-function popup_over(){
-  temp_input.value=score;
-  window.open('../popup/gameover.html',"childForm", "width=570, height=350, resizable = no, scrollbars = no");
-}
-function popup_clear(){
+
+function popup(){
   temp_input.value=score;
   window.open('../popup/gameover.html',"childForm", "width=570, height=350, resizable = no, scrollbars = no");
 }
@@ -121,7 +118,7 @@ function gameStart(){
         context.font = "bold 50px Gulim";
         context.fillStyle="white";
         context.fillText(score, 360, 410);
-        popup_over();
+        popup();
         return ;
       }
     }else if(gameclear){
@@ -133,7 +130,7 @@ function gameStart(){
         context.font = "bold 50px Gulim";
         context.fillStyle="white";
         context.fillText(score, 360, 410);
-        popup_clear();
+        popup();
         return ;
       }
     }
@@ -316,8 +313,6 @@ function createObstacle(){
 
 
 function chkBreak(){
-
-  let popup1=false;
   for (let i=0 ; i<trampoline_list.length ; i++) {
      let check=char_y+dy>=trampoline_list[i].y-60 
             && char_y+dy<=trampoline_list[i].y+60 
@@ -349,25 +344,21 @@ function chkBreak(){
     
     
       //박 격파 성공 
-      let clear_check=char_y+dy>=bak.y-100 
-              && char_y+dy<=bak.y+100 
-              && char_x+dx>=bak.x-100 
-              && char_x+dx<=bak.x+100;
+      let clear_check=char_y+dy>=bak.y-150 
+              && char_y+dy<=bak.y+150 
+              && char_x+dx>=bak.x-150 
+              && char_x+dx<=bak.x+150;
       if(clear_check){
           clearImg.src="../img/bakB.png";
     
           a_clear.play();
-
+          score+=500;
           //popup1=true; 
           bak.isblocken=true;
           gameclear=true;
+          break;
       }
   }
-  if(popup1==true){
-    setTimeout(() =>  popup_clear(), 1000);
-  }
-
-
 }
 
 function keydown() {
@@ -401,8 +392,10 @@ function keyup() {
     }
 
     function minidraw() {
-      context2.drawImage(minibackImg,0,0,800,600); //★★★★★★★★★★★★미니맵 수정
-      context2.drawImage(miniImg,mini_x,mini_y,200 ,20);
+      if(mini_y<=580){
+        context2.drawImage(minibackImg,0,0,800,600);
+        context2.drawImage(miniImg,mini_x,mini_y,150 ,20);
+      } 
     }
     
   
