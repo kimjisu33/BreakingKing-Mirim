@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="popup.css">
 </head>
 <body>
-    <form action="/mysql_insert" method="post" name="rankForm">
+    <form action="/rank_insert" method="post" name="rankForm">
         점수 <input type="text" name="score" id="score" value="" readonly><br>
         이름 <input type="text" name="name" id="name"><br>
         <input type="button" onclick="submit_btn()" value="제출" id="submitBtn">
@@ -31,7 +31,13 @@
         if(!name){
             alert('이름을 입력해 주세요');
         }else{
-            rankForm.submit();   
+            if(name.length>10){
+                alert('이름이 너무 길어요!!!');
+            }
+            else {
+                rankForm.submit(); 
+            }   
+                    
         }
     }    
 </script>

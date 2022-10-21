@@ -12,7 +12,7 @@
 
 #info_logo{
 margin-top: 100px;
-    margin-left: 500px;
+    margin-left: 550px;
     width: 500px;
     height: 150px;
 }
@@ -23,7 +23,7 @@ a { text-decoration:none }
 #boxBackground{
     background-image:url('../img/게임설명.png'); ;
     margin-top: 50px;
-    margin-left: 200px;
+    margin-left: 250px;
     background-repeat: no-repeat;
     background-size: cover;
     width: 1500px;

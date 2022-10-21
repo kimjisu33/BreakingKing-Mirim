@@ -17,7 +17,7 @@ let context2;
 let miniImg=new Image();
 miniImg.src="../img/char_score1.png";
 let minibackImg=new Image();
-minibackImg.src="../img/space/map.png";
+minibackImg.src="../img/well/map.png";
 let scorebackImg=new Image();
 scorebackImg.src="../img/score_back.png";
 let clearImg=new Image();
@@ -32,13 +32,13 @@ let context3=document.getElementById("scoreCanvas").getContext("2d");
 
 let context;
 let backgroundImg=new Image();
-backgroundImg.src="../img/space/map.png"; //배경
+backgroundImg.src="../img/well/map.png"; //배경
 let charImg=new Image();
 let ObstacleImg=new Image();
-charImg.src="../img/space/char_ready.png";
-ObstacleImg.src="../img/space/obs.png"; //장애물
+charImg.src="../img/well/char_ready.png";
+ObstacleImg.src="../img/well/obs.png"; //장애물
 let ObsBreakImg=new Image();
-ObsBreakImg.src="../img/space/obsB.png";
+ObsBreakImg.src="../img/well/obsB.png";
 let char_x=340; //캐릭터 x 좌표
 let char_y=470; //캐릭터 y 좌표
 let Obs_x=0; //장애물 x 좌표                                                                                
@@ -96,7 +96,7 @@ let temp_input=document.getElementById('temp_input');
 
 function popup(){
   temp_input.value=score;
-  window.open('../popup/gameover.html',"childForm", "width=570, height=350, resizable = no, scrollbars = no, left=1000, top=500");
+  window.open('../popup/gameover.html',"childForm", "width=570, height=350, resizable = no, scrollbars = no");
 }
 function gameStart(){
   gameCanvas = document.getElementById("gameCanvas");
@@ -136,7 +136,7 @@ function gameStart(){
     }
     move();
     draw();
-   a_play.play();
+   // a_play.play();
     minidraw();
     scoredraw(); //점수판
 
@@ -154,7 +154,7 @@ function gameStart(){
     else if(Spacekey==2 && bg_y<0){
       dy=5;
       
-      charImg.src="../img/space/char_ready.png";
+      charImg.src="../img/well/char_ready.png";
       bg_y=c_bg_y;
       if(!gameover&&!bak.isblocken){
         gameover=true;
@@ -244,7 +244,7 @@ function Space(){
         setInterval(()=>dy=-5,200);
         Spacekey=2;
         
-        charImg.src="../img/space/char_flying.png"; 
+        charImg.src="../img/well/char_flying.png"; 
       
       }  
       //격파 할 때
@@ -255,13 +255,13 @@ function Space(){
 
         //좌우 구분
         if(direction=true){
-          charImg.src="../img/space/char_lkick.png"; 
+          charImg.src="../img/well/char_lkick.png"; 
         }
         else {
-          charImg.src="../img/space/char_rkick.png"; 
+          charImg.src="../img/well/char_rkick.png"; 
         } 
         chkBreak();
-        setTimeout(() => charImg.src="../img/space/char_flying.png", 200);
+        setTimeout(() => charImg.src="../img/well/char_flying.png", 200);
      
       }
    
@@ -317,7 +317,7 @@ function chkBreak(){
      let check=char_y+dy>=trampoline_list[i].y-60 
             && char_y+dy<=trampoline_list[i].y+60 
             && char_x+dx>=trampoline_list[i].x-60 
-            && char_x+dx<=trampoline_list[i].x+70;
+            && char_x+dx<=trampoline_list[i].x+60;
     if(check){
       a_jump.play();
       trampoline_list[i].isUsed=true;
@@ -326,16 +326,16 @@ function chkBreak(){
 }
   for (let i=0 ; i<block_list.length ; i++) {
       //격파성공하면
-    let check=char_y+dy>=block_list[i].y-70
-              && char_y+dy<=block_list[i].y+70
-              && char_x+dx>=block_list[i].x-80 
-              && char_x+dx<=block_list[i].x+60;
+    let check=char_y+dy>=block_list[i].y-70 
+              && char_y+dy<=block_list[i].y+70 
+              && char_x+dx>=block_list[i].x-70 
+              && char_x+dx<=block_list[i].x+70;
     if(check){
       block_list[i].img=ObsBreakImg;
       block_list[i].isblocken=true;
 
       
-      charImg.src="../img/space/char_rkick.png"  
+      charImg.src="../img/well/char_rkick.png"  
       a_break.play(); 
       score+=10;
 

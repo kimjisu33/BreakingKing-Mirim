@@ -12,14 +12,16 @@ const app=express();
 const mysql     = require('mysql');
 const db 	= require('./config/database.js');
 
+app.use(bodyParser.urlencoded({extended:false}));
+
 app.set('port', process.env.PORT || 3006);
 
 app.use(static(path.join(__dirname, 'public')));
 
-app.post('/mysql_insert',(req,res)=>{
+app.post('/rank_insert',(req,res)=>{
   let name=req.body.name;
   let score=Number(req.body.score);
-  connection.query('insert into score values (?,?);',[name,score], (err,results,fields)=>{
+  db.query('insert into score values (?,?);',[name,score], (err,results,fields)=>{
     if(err) throw err;
     res.redirect("/popup/success.html");
     res.end();
