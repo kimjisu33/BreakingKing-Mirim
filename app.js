@@ -10,7 +10,7 @@ const bodyParser = require('body-parser')
 const app=express();
 
 const mysql     = require('mysql');
-const db 	= require('./config/database.js');
+//const db 	= require('./database.js');
 
 app.use(bodyParser.urlencoded({extended:false}));
 
